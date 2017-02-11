@@ -1,0 +1,19 @@
+{#{% extends "admin/base.html" %}#}
+
+{% load static %}
+{#<link rel="stylesheet" href="{% static 'units/css/base.css' %}" />#}
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<hr/>
+<form action="" method="get">
+{% crispy filter.form filter.form.helper %}
+</form>
+
+{% render_table table %}
+
+
+{% endblock content %}
