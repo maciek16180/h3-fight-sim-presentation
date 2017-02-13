@@ -5,6 +5,15 @@ from django.db import models
 
 
 @python_2_unicode_compatible
+class Town(models.Model):
+
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+
+@python_2_unicode_compatible
 class Unit(models.Model):
 
     name = models.CharField(max_length=30)
@@ -21,6 +30,10 @@ class Unit(models.Model):
     max_dmg = models.IntegerField()
     shots = models.IntegerField()
     spells = models.IntegerField()
+
+    town = models.ForeignKey(Town, default=0)
+    level = models.PositiveSmallIntegerField(default=0)
+    upgraded = models.BooleanField(default=False, verbose_name='Upgraded?')
 
     b_double_wide = models.BooleanField(default=False, verbose_name='Big?')
     b_free_attack = models.BooleanField(default=False, verbose_name='No retaliation?')

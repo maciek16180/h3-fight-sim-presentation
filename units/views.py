@@ -26,6 +26,6 @@ class IndexView(PagedFilteredTableView):
     model = Unit
     table_class = UnitTable
     template_name = 'units/index.html'
-    paginate_by = 141
+    paginate_by = 28
     filter_class = UnitFilter
     formhelper_class = UnitFilterFormHelper

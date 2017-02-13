@@ -1,4 +1,7 @@
-from units.models import Unit
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from units.models import Unit, Town
 import pandas as pd
 
 data = pd.read_csv('CRTRAITS.TXT', sep=',', encoding='utf-8')
@@ -7,17 +10,6 @@ data.Attributes.values[data.Attributes.values == u'0'] = ''
 crap = ['Plural', 'Wood', 'Mercury', 'Ore', 'Sulfur', 'Crystal', 'Gems',
         'Ability Text', 'GuardsLow', 'GuardsHigh']
 data.drop(crap, axis=1, inplace=True)
-
-
-keywords = {'DOUBLE_WIDE',
-            'SHOOTING_ARMY',
-            'const_free_attack',
-            'const_jousting',
-            'const_no_melee_penalty',
-            'const_two_attacks',
-            'IS_UNDEAD',
-            'cusELEMENTAL',
-            'cusGOLEM'}
 
 
 for row in data.values[:-5]:
@@ -36,3 +28,23 @@ for row in data.values[:-5]:
     u.b_golem = 'cusGOLEM' in attributes
 
     u.save()
+
+
+for name in [u'Zamek', u'Bastion', u'Forteca', u'Inferno', u'Nekropolia',
+             u'Loch', u'Twierdza', u'Cytadela', u'Wrota żywiołów', u'Neutralne']:
+    t = Town()
+    t.name = name
+    t.save()
+
+
+for unit in Unit.objects.all():
+    if unit.id <= 126:
+        unit.town_id = (unit.id - 1) / 14 + 1
+        unit.level = ((unit.id - 1) / 2) % 7 + 1
+        unit.upgraded = bool((unit.id - 1) % 2)
+    else:
+        unit.town_id = 10
+        unit.upgraded = False
+        unit.level = [1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6, 8, 10, 10, 10][unit.id-127]
+
+    unit.save()
