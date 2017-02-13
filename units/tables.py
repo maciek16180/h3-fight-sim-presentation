@@ -12,4 +12,4 @@ class UnitTable(django_tables2.Table):
     class Meta:
         model = Unit
         exclude = []
-        # attrs = {'class': 'paleblue'}
+        attrs = {'class': 'paleblue'}

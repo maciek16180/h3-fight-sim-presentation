@@ -1,12 +1,10 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
 {#<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "django_tables2/themes/paleblue/css/screen.css" %}{% endblock %}" />#}
+
 {% load render_table from django_tables2 %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-
-{% crispy filter.form filter.form.helper %}
 
 {% render_table table %}
 
