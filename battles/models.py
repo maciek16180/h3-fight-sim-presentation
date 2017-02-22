@@ -5,19 +5,6 @@ from django.db import models
 from units.models import Unit
 import pandas as pd
 
-#
-# @python_2_unicode_compatible
-# class Duel(models.Model):
-#
-#     unitA = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='unitA')
-#     unitB = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='unitB')
-#
-#     result = models.FloatField()
-#
-#     def __str__(self):
-#         return self.unitA.name + ' vs ' + self.unitB.name
-#
-
 
 @python_2_unicode_compatible
 class Fights(models.Model):
@@ -30,4 +17,5 @@ class Fights(models.Model):
 data = pd.read_csv('CRTRAITS.TXT', sep=',', encoding='utf-8')
 
 for monster_id in xrange(141):
-    Fights.add_to_class('vs' + str(monster_id + 1), models.FloatField(verbose_name=data.values[monster_id][0]))
+    Fights.add_to_class('vs' + str(monster_id + 1),
+                        models.FloatField(verbose_name=data.values[monster_id][0]))

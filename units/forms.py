@@ -8,9 +8,20 @@ class UnitFilterFormHelper(FormHelper):
     form_class = 'form-inline'
     field_template = 'bootstrap3/layout/inline_field.html'
     layout = Layout(
-        'name',
-        'gold_cost',
-        'town',
-        'upgraded',
+        # 'name',
+        'gold_cost1',
+        # 'town',
+        'upgraded1',
+        Submit('submit', 'Apply Filter'),
+    )
+
+
+class UnitFilterFormHelper2(FormHelper):
+    form_method = 'GET'
+    form_class = 'form-inline'
+    field_template = 'bootstrap3/layout/inline_field.html'
+    layout = Layout(
+        'gold_cost2',
+        'upgraded2',
         Submit('submit', 'Apply Filter'),
     )
