@@ -1,20 +1,27 @@
-from .models import Unit
+from .models import Unit, Town
 from django_filters import FilterSet
 import django_filters
+from copy import deepcopy as dc
+from django.forms import CheckboxSelectMultiple
 
 
 class UnitFilter(FilterSet):
-    gold_cost1 = django_filters.NumberFilter('gold_cost')
-    upgraded1 = django_filters.BooleanFilter('upgraded')
 
     class Meta:
         model = Unit
         exclude = []
 
 
-class UnitFilter2(FilterSet):
-    gold_cost2 = django_filters.NumberFilter('gold_cost')
-    upgraded2 = django_filters.BooleanFilter('upgraded')
+class UnitFilterDouble(FilterSet):
+    col_gold_cost = django_filters.NumberFilter('gold_cost')
+    row_gold_cost = dc(col_gold_cost)
+
+    col_upgraded = django_filters.BooleanFilter('upgraded')
+    row_upgraded = dc(col_upgraded)
+
+    col_town = django_filters.ModelMultipleChoiceFilter(queryset=Town.objects.all(), name='town', lookup_expr='in',
+                                                        label='Town', widget=CheckboxSelectMultiple)
+    row_town = dc(col_town)
 
     class Meta:
         model = Unit
