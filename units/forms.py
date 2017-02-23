@@ -1,6 +1,6 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Fieldset
-from django.forms import MultipleChoiceField
+from crispy_forms.layout import Layout, Submit, Fieldset, Field, Reset
+from crispy_forms.bootstrap import InlineField
 
 
 class UnitFilterFormHelper(FormHelper):
@@ -18,21 +18,23 @@ class UnitFilterFormHelper(FormHelper):
 
 class UnitFilterDoubleFormHelper(FormHelper):
     form_method = 'GET'
-    form_class = 'form-horizontal'
-    field_template = 'bootstrap3/layout/inline_field.html'
+    # form_class = 'form-vertical'
+    # field_template = 'bootstrap3/layout/inline_field.html'
 
     layout = Layout(
         Fieldset(
             'VS Units',
-            'col_gold_cost',
-            'col_upgraded',
+            InlineField('col_gold_cost'),
+            InlineField('col_upgraded'),
             'col_town',
+            InlineField('col_level'),
         ),
         Fieldset(
             'Units to show',
-            'row_gold_cost',
-            'row_upgraded',
+            InlineField('row_gold_cost'),
+            InlineField('row_upgraded'),
             'row_town',
+            InlineField('row_level'),
         ),
-        Submit('submit', 'Apply Filter'),
+        Submit('submit', 'Apply Filter')
     )

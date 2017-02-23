@@ -18,9 +18,6 @@ def index(request):
         if k[:4] == 'col_':
             row_filter_request.pop(k)
 
-    # column_filter_request = {k: v for (k, v) in request.GET.items() if k[:4] == 'col_'}
-    # row_filter_request = {k: v for (k, v) in request.GET.items() if k[:4] == 'row_'}
-
     filter_form = UnitFilterDouble(request.GET, Unit.objects.all())
     filter_form.form.helper = UnitFilterDoubleFormHelper()
 
