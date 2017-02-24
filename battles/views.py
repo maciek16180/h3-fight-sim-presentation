@@ -6,6 +6,10 @@ from .models import Fights
 from .tables import FightsTable
 from django_tables2 import RequestConfig
 from django import forms
+from combat import fight
+from unit import make_unit, stack
+from .forms import FightForm
+from django.http import HttpResponseRedirect
 
 
 def index(request):
@@ -73,3 +77,24 @@ def index(request):
     RequestConfig(request, paginate={'per_page': 28}).configure(table)
 
     return render(request, 'battles/index.html', {'table': table, 'form': filter_form.form})
+
+
+def combat(request):
+    res1 = ''
+    res2 = ''
+
+    if request.method == 'POST':
+        form = FightForm(request.POST)
+
+        if form.is_valid():
+            data = form.cleaned_data
+            A = stack(make_unit(data['unit1'].name), data['count1'])
+            B = stack(make_unit(data['unit2'].name), data['count2'])
+            result = fight(A, B, data['num_fights'])
+            res1 = A.name + ': {}'.format(result[A.name][0])
+            res2 = B.name + ': {}'.format(result[B.name][0])
+
+    else:
+        form = FightForm()
+
+    return render(request, 'battles/combat.html', {'form': form, 'res1': res1, 'res2': res2})
