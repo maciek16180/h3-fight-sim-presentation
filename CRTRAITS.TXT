@@ -101,12 +101,12 @@ Gnoll,Gnolle,0,0,0,0,0,0,50,70,56,12,6,6,4,3,5,2,3,0,0,20,50,,0
 Gnoll maruder,Gnolle maruderzy,0,0,0,0,0,0,70,90,90,12,6,6,5,4,6,2,3,0,0,20,30,,0
 Jaszczuroczłek,Jaszczuroludzie,0,0,0,0,0,0,110,115,126,9,0,14,4,5,6,2,3,12,0,16,30,,SHOOTING_ARMY
 Reptilion,Reptilioni,0,0,0,0,0,0,140,130,156,9,0,15,5,6,8,2,5,24,0,16,25,,SHOOTING_ARMY
-Gorgona,Gorgony,0,0,0,0,0,0,525,890,890,3,0,70,5,10,14,12,16,0,0,12,25,,DOUBLE_WIDE
-Wielka gorgona,Wielkie gorgony,0,0,0,0,0,0,600,1028,1028,3,0,70,6,11,16,12,16,0,0,12,20,Zabija spojrzeniem.,DOUBLE_WIDE
 Ważka,Ważki,0,0,0,0,0,0,220,205,256,8,0,20,9,7,9,2,5,0,0,10,20,Rozprasza zaklęcia ochronne.,FLYING_ARMY
 Smocza ważka,Smocze ważki,0,0,0,0,0,0,240,205,256,8,0,20,13,8,10,2,5,0,0,10,16,Rozprasza zaklęcia ochronne. Osłabia przeciwników.,FLYING_ARMY
 Bazyliszek,Bazyliszki,0,0,0,0,0,0,325,506,552,4,0,35,5,11,11,6,10,0,0,8,16,Zamienia w kamień.,DOUBLE_WIDE
 Bazyliszek większy,Bazyliszki większe,0,0,0,0,0,0,400,561,714,4,0,40,7,12,12,6,10,0,0,8,12,Zamienia w kamień.,DOUBLE_WIDE
+Gorgona,Gorgony,0,0,0,0,0,0,525,890,890,3,0,70,5,10,14,12,16,0,0,12,25,,DOUBLE_WIDE
+Wielka gorgona,Wielkie gorgony,0,0,0,0,0,0,600,1028,1028,3,0,70,6,11,16,12,16,0,0,12,20,Zabija spojrzeniem.,DOUBLE_WIDE
 Wiwerna,Wiwerny,0,0,0,0,0,0,800,1050,1350,2,0,70,7,14,14,14,18,0,0,5,12,,DOUBLE_WIDE | FLYING_ARMY
 Wiwerna królewska,Wiwerny królewskie,0,0,0,0,0,0,1100,1181,1518,2,0,70,11,14,14,18,22,0,0,5,10,Trujący atak.,DOUBLE_WIDE | FLYING_ARMY
 Hydra,Hydry,0,0,0,0,0,0,2200,4120,4120,1,0,175,5,16,18,25,45,0,0,4,10,Atakuje wszystkich przyległych wrogów. Powstrzymuje kontratak.,DOUBLE_WIDE | KING_1 | const_free_attack

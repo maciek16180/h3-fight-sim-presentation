@@ -3,6 +3,14 @@ from django_filters import FilterSet
 import django_filters
 from copy import deepcopy as dc
 from django.forms import CheckboxSelectMultiple
+from django_filters import filters
+
+
+filters.LOOKUP_TYPES = [
+    ('exact', '='),
+    ('lt', '>'),
+    ('gt', '<'),
+]
 
 
 class UnitFilter(FilterSet):
@@ -13,6 +21,9 @@ class UnitFilter(FilterSet):
 
 
 class UnitFilterDouble(FilterSet):
+    col_name = django_filters.CharFilter('name', lookup_expr='icontains', label='Name')
+    row_name = dc(col_name)
+
     col_gold_cost = django_filters.NumericRangeFilter('gold_cost', lookup_expr='range', label='Gold')
     row_gold_cost = dc(col_gold_cost)
 

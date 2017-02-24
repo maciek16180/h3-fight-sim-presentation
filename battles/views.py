@@ -5,6 +5,7 @@ from units.models import Unit
 from .models import Fights
 from .tables import FightsTable
 from django_tables2 import RequestConfig
+from django import forms
 
 
 def index(request):
@@ -19,27 +20,51 @@ def index(request):
             row_filter_request.pop(k)
 
     filter_form = UnitFilterDouble(request.GET, Unit.objects.all())
+    filter_form.form.fields['checkbox_growth'] = \
+        forms.ChoiceField(widget=forms.CheckboxInput, label='Consider growth?',
+                          required=False, choices=[True, False])
+    filter_form.form.fields['checkbox_gold_cost'] = \
+        forms.ChoiceField(widget=forms.CheckboxInput, label='Consider cost?',
+                          required=False, choices=[True, False])
     filter_form.form.helper = UnitFilterDoubleFormHelper()
 
     column_filter = UnitFilterDouble(column_filter_request, Unit.objects.all())
     vs_units = column_filter.qs
-    vs_units_pks = set(map(lambda x: x.pk, vs_units))
+    vs_units_pks = map(lambda x: x.pk, vs_units)
 
     data = Fights.objects.all()
-    base_value = sum(1 / getattr(data.get(pk=1), 'vs' + str(i)) for i in vs_units_pks)
 
     row_filter = UnitFilterDouble(row_filter_request, Unit.objects.all())
     units_to_show = set(map(lambda x: x.pk, row_filter.qs))
 
+    growths = map(lambda x: x.growth + x.horde_growth, Unit.objects.all())
+
+    costs = map(lambda x: x.gold_cost, Unit.objects.all())
+
+    pikeman_fights = [getattr(data.get(pk=1), 'vs' + str(i)) for i in vs_units_pks]
+
+    if request.GET.get('checkbox_growth', None) == 'on':
+        for i in xrange(len(pikeman_fights)):
+            pikeman_fights[i] = pikeman_fights[i] / growths[0] * growths[vs_units_pks[i]-1]
+    if request.GET.get('checkbox_gold_cost', None) == 'on':
+        for i in xrange(len(pikeman_fights)):
+            pikeman_fights[i] = pikeman_fights[i] * costs[0] / costs[vs_units_pks[i]-1]
+    base_value = sum(1 / x for x in pikeman_fights)
+
     table_data = []
     for x in data:
         if x.pk in units_to_show:
-            x_value = int(sum(1 / getattr(x, 'vs' + str(i)) for i in vs_units_pks) / base_value * 80) \
-                if vs_units_pks else 0
-            x_dict = {'id': x.id, 'unit': x.unit, 'value': x_value}
+            x_dict = {'id': x.id, 'unit': x.unit, 'value': None}
             for i in xrange(1, 142):
                 attr_name = 'vs' + str(i)
                 x_dict[attr_name] = getattr(x, attr_name)
+                if request.GET.get('checkbox_growth', None) == 'on':
+                    x_dict[attr_name] = x_dict[attr_name] / growths[x.pk-1] * growths[i-1]
+                if request.GET.get('checkbox_gold_cost', None) == 'on':
+                    x_dict[attr_name] = x_dict[attr_name] * costs[x.pk-1] / costs[i-1]
+            x_value = int(sum(1 / x_dict['vs' + str(i)] for i in vs_units_pks) / base_value * 80) \
+                if vs_units_pks else 0
+            x_dict['value'] = x_value
             table_data.append(x_dict)
 
     table = FightsTable(data=table_data)
