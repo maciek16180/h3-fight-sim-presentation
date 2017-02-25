@@ -14,6 +14,17 @@ filters.LOOKUP_TYPES = [
 
 
 class UnitFilter(FilterSet):
+    name = django_filters.CharFilter('name', lookup_expr='icontains', label='Name')
+
+    gold_cost = django_filters.NumericRangeFilter('gold_cost', lookup_expr='range', label='Gold')
+
+    upgraded = django_filters.BooleanFilter('upgraded')
+
+    town = django_filters.ModelMultipleChoiceFilter(queryset=Town.objects.all(), name='town', lookup_expr='in',
+                                                    label='', widget=CheckboxSelectMultiple)
+
+    level = django_filters.ChoiceFilter(choices=zip(xrange(1, 11), xrange(1, 11)), name='level',
+                                        lookup_expr=['exact', 'lt', 'gt'], label='Level')
 
     class Meta:
         model = Unit
@@ -31,7 +42,7 @@ class UnitFilterDouble(FilterSet):
     row_upgraded = dc(col_upgraded)
 
     col_town = django_filters.ModelMultipleChoiceFilter(queryset=Town.objects.all(), name='town', lookup_expr='in',
-                                                        label='Town', widget=CheckboxSelectMultiple)
+                                                        label='', widget=CheckboxSelectMultiple)
     row_town = dc(col_town)
 
     col_level = django_filters.ChoiceFilter(choices=zip(xrange(1, 11), xrange(1, 11)), name='level',

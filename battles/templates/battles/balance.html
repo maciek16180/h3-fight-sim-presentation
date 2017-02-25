@@ -1,0 +1,14 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<hr/>
+    {% crispy form form.helper %}
+
+<h1>
+    {{ res }}
+</h1>
+
+{% endblock content %}

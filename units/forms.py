@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Fieldset, HTML, MultiField
+from crispy_forms.layout import Layout, Submit, Fieldset, HTML, MultiField, Field
 from crispy_forms.bootstrap import InlineField
 from django import forms
 
@@ -10,29 +10,30 @@ class MyInlineField(InlineField):
 
 class UnitFilterFormHelper(FormHelper):
     form_method = 'GET'
-    form_class = 'form-inline'
-    field_template = 'bootstrap3/layout/inline_field.html'
     layout = Layout(
-        'name',
-        'gold_cost',
-        'town',
-        'upgraded',
+        HTML('<h2>Unit list</h2>'),
+        MyInlineField('name'),
+        MyInlineField('gold_cost'),
+        MyInlineField('upgraded'),
+        Field('town'),
+        MyInlineField('level'),
+        HTML('<br>'),
         Submit('submit', 'Apply Filter'),
+        HTML('<br><br>')
     )
 
 
 class UnitFilterDoubleFormHelper(FormHelper):
     form_method = 'GET'
-    # form_class = 'form-inline'
-    # field_template = 'bootstrap3/layout/inline_field.html'
 
     layout = Layout(
+        HTML('<h2>Combat results</h2>'),
         Fieldset(
             'VS Units',
             MyInlineField('col_name'),
             MyInlineField('col_gold_cost'),
             MyInlineField('col_upgraded'),
-            'col_town',
+            Field('col_town'),
             MyInlineField('col_level'),
             'checkbox_growth',
             'checkbox_gold_cost',
@@ -43,7 +44,7 @@ class UnitFilterDoubleFormHelper(FormHelper):
             MyInlineField('row_name'),
             MyInlineField('row_gold_cost'),
             MyInlineField('row_upgraded'),
-            'row_town',
+            Field('row_town'),
             MyInlineField('row_level'),
         ),
         HTML('<br>'),

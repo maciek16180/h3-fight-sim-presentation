@@ -6,10 +6,9 @@ from .models import Fights
 from .tables import FightsTable
 from django_tables2 import RequestConfig
 from django import forms
-from combat import fight
+from combat import fight, find_balance
 from unit import make_unit, stack
-from .forms import FightForm
-from django.http import HttpResponseRedirect
+from .forms import FightForm, BalanceForm
 
 
 def index(request):
@@ -98,3 +97,27 @@ def combat(request):
         form = FightForm()
 
     return render(request, 'battles/combat.html', {'form': form, 'res1': res1, 'res2': res2})
+
+
+def balance(request):
+    res = ''
+
+    if request.method == 'POST':
+        form = BalanceForm(request.POST)
+
+        if form.is_valid():
+            data = form.cleaned_data
+            countA, countB = data['count1'], data['count2']
+            nameA, nameB = data['unit1'].name, data['unit2'].name
+            count1 = countA or countB
+            idxA = 1 if countB else 0
+            idxB = (idxA + 1) % 2
+            name1 = nameA if count1 == countA else nameB
+            name2 = nameB if count1 == countA else nameA
+            result = find_balance(name1, name2, data['num_fights'], startA=count1)
+            res = u'{} {} \u2248 {} {}'.format(result[idxA], nameA, result[idxB], nameB)
+
+    else:
+        form = BalanceForm()
+
+    return render(request, 'battles/balance.html', {'form': form, 'res': res})
