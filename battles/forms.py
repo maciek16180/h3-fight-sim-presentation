@@ -14,8 +14,16 @@ class FightForm(forms.Form):
 
     num_fights = forms.IntegerField(label='Num fights', min_value=1, initial=1000)
 
+    def clean(self):
+        cleaned_data = super(FightForm, self).clean()
+
+        if self.cleaned_data['unit1'] == self.cleaned_data['unit2']:
+            raise forms.ValidationError('Sorry, mirror matches are not supported.')
+
+        return cleaned_data
+
     helper = FormHelper()
-    helper.form_method = 'POST'
+    helper.form_method = 'GET'
     helper.form_class = 'form-horizontal'
     helper.field_template = 'bootstrap3/layout/inline_field.html'
     helper.layout = Layout(
@@ -25,7 +33,9 @@ class FightForm(forms.Form):
         'unit2',
         'count2',
         'num_fights',
+        HTML('<br>'),
         Submit('submit', 'Fight!'),
+        HTML('<br><br>'),
     )
 
 
@@ -47,7 +57,7 @@ class BalanceForm(forms.Form):
         return cleaned_data
 
     helper = FormHelper()
-    helper.form_method = 'POST'
+    helper.form_method = 'GET'
     helper.form_class = 'form-horizontal'
     helper.field_template = 'bootstrap3/layout/inline_field.html'
     helper.layout = Layout(
@@ -57,5 +67,7 @@ class BalanceForm(forms.Form):
         'unit2',
         'count2',
         'num_fights',
+        HTML('<br>'),
         Submit('submit', 'Submit'),
+        HTML('<br><br>'),
     )

@@ -1,13 +1,15 @@
+{% include 'battles/links.html' %}
+
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
+    <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
 {% load crispy_forms_tags %}
 {% load render_table from django_tables2 %}
 
 {% block content %}
 
-<hr/>
-{% crispy form form.helper %}
+    <hr/>
+    {% crispy form form.helper %}
 
-{% render_table table %}
+    {% render_table table %}
 
 {% endblock content %}

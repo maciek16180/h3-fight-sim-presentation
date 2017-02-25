@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'h3_battles.urls'
+ROOT_URLCONF = 'h3-fight-sim-presentation.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'h3_battles.wsgi.application'
+WSGI_APPLICATION = 'h3-fight-sim-presentation.wsgi.application'
 
 
 # Database

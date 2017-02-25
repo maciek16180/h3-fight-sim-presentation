@@ -68,6 +68,8 @@ def index(request):
             x_value = int(sum(1 / x_dict['vs' + str(i)] for i in vs_units_pks) / base_value * 80) \
                 if vs_units_pks else 0
             x_dict['value'] = x_value
+            x_dict['gold_cost'] = costs[x.pk-1]
+            x_dict['tot_growth'] = growths[x.pk-1]
             table_data.append(x_dict)
 
     table = FightsTable(data=table_data)
@@ -82,8 +84,8 @@ def combat(request):
     res1 = ''
     res2 = ''
 
-    if request.method == 'POST':
-        form = FightForm(request.POST)
+    if request.GET:
+        form = FightForm(request.GET)
 
         if form.is_valid():
             data = form.cleaned_data
@@ -94,7 +96,7 @@ def combat(request):
             res2 = B.name + ': {}'.format(result[B.name][0])
 
     else:
-        form = FightForm()
+        form = FightForm(initial={'num_fights': 1000})
 
     return render(request, 'battles/combat.html', {'form': form, 'res1': res1, 'res2': res2})
 
@@ -102,8 +104,8 @@ def combat(request):
 def balance(request):
     res = ''
 
-    if request.method == 'POST':
-        form = BalanceForm(request.POST)
+    if request.GET:
+        form = BalanceForm(request.GET)
 
         if form.is_valid():
             data = form.cleaned_data
@@ -118,6 +120,6 @@ def balance(request):
             res = u'{} {} \u2248 {} {}'.format(result[idxA], nameA, result[idxB], nameB)
 
     else:
-        form = BalanceForm()
+        form = BalanceForm(initial={'num_fights': 1000})
 
     return render(request, 'battles/balance.html', {'form': form, 'res': res})
