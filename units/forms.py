@@ -1,5 +1,6 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Fieldset, HTML, MultiField, Field
+from crispy_forms.layout import Layout, Submit, Fieldset, HTML, \
+    MultiField, Field
 from crispy_forms.bootstrap import InlineField
 from django import forms
 

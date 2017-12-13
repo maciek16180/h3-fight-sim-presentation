@@ -12,13 +12,15 @@ class FightForm(forms.Form):
     count1 = forms.IntegerField(label='A Count', min_value=1)
     count2 = forms.IntegerField(label='B Count', min_value=1)
 
-    num_fights = forms.IntegerField(label='Num fights', min_value=1, initial=1000)
+    num_fights = forms.IntegerField(
+        label='Num fights', min_value=1, initial=1000)
 
     def clean(self):
         cleaned_data = super(FightForm, self).clean()
 
         if self.cleaned_data['unit1'] == self.cleaned_data['unit2']:
-            raise forms.ValidationError('Sorry, mirror matches are not supported.')
+            raise forms.ValidationError(
+                'Sorry, mirror matches are not supported.')
 
         return cleaned_data
 
@@ -46,13 +48,15 @@ class BalanceForm(forms.Form):
     count1 = forms.IntegerField(label='A Count', min_value=1, required=False)
     count2 = forms.IntegerField(label='B Count', min_value=1, required=False)
 
-    num_fights = forms.IntegerField(label='Num fights', min_value=1, initial=1000)
+    num_fights = forms.IntegerField(
+        label='Num fights', min_value=1, initial=1000)
 
     def clean(self):
         cleaned_data = super(BalanceForm, self).clean()
 
         if self.cleaned_data['count1'] and self.cleaned_data['count2']:
-            raise forms.ValidationError('Fixing both counts doesn\'t make sense.')
+            raise forms.ValidationError(
+                'Fixing both counts doesn\'t make sense.')
 
         return cleaned_data
 

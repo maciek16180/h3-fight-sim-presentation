@@ -14,8 +14,9 @@ data.drop(crap, axis=1, inplace=True)
 
 for row in data.values[:-5]:
     u = Unit()
-    u.name, u.gold_cost, u.fight_value, u.ai_value, u.growth, u.horde_growth, u.hp, \
-        u.speed, u.attack, u.defense, u.min_dmg, u.max_dmg, u.shots, u.spells = row[:-1]
+    (u.name, u.gold_cost, u.fight_value, u.ai_value, u.growth, u.horde_growth,
+     u.hp, u.speed, u.attack, u.defense, u.min_dmg, u.max_dmg, u.shots,
+     u.spells) = row[:-1]
 
     attributes = set(row[-1].split(' | '))
 
@@ -31,7 +32,8 @@ for row in data.values[:-5]:
 
 
 for name in [u'Zamek', u'Bastion', u'Forteca', u'Inferno', u'Nekropolia',
-             u'Loch', u'Twierdza', u'Cytadela', u'Wrota żywiołów', u'Neutralne']:
+             u'Loch', u'Twierdza', u'Cytadela', u'Wrota żywiołów',
+             u'Neutralne']:
     t = Town()
     t.name = name
     t.save()
@@ -45,6 +47,7 @@ for unit in Unit.objects.all():
     else:
         unit.town_id = 10
         unit.upgraded = False
-        unit.level = [1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6, 8, 10, 10, 10][unit.id-127]
+        unit.level = [1, 1, 2, 2, 3, 3, 4, 5,
+                      5, 6, 6, 8, 10, 10, 10][unit.id-127]
 
     unit.save()

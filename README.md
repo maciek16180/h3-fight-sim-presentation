@@ -1,6 +1,6 @@
 # h3-fight-sim-presentation
 
-Development version.
+Development version. *Works only with python 3!*
 
 Required modules: `Django`, `django-bootstrap3`, `django-crispy-forms`, `django-filter`, `django-tables2`.
 

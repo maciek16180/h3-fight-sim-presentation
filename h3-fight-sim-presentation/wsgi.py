@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "h3-fight-sim-presentation.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE",
+                      "h3-fight-sim-presentation.settings")
 
 application = get_wsgi_application()
