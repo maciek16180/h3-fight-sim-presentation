@@ -12,6 +12,7 @@ from .forms import FightForm, BalanceForm
 
 
 def index(request):
+
     column_filter_request = request.GET.copy()
     for (k, v) in list(column_filter_request.items()):
         if k[:4] == 'row_':
@@ -22,44 +23,58 @@ def index(request):
         if k[:4] == 'col_':
             row_filter_request.pop(k)
 
-    filter_form = UnitFilterDouble(request.GET, Unit.objects.all())
+    filter_request = request.GET.copy()
+
+    # initial filter to avoid long page loading
+    if 'col_name' not in filter_request:
+        filter_request['col_name'] = 'smok'
+        column_filter_request['col_name'] = 'smok'
+        init_name = True
+    else:
+        init_name = False
+
+    filter_form = UnitFilterDouble(filter_request, Unit.objects.all())
     filter_form.form.fields['checkbox_growth'] = forms.ChoiceField(
-        widget=forms.CheckboxInput, label='Consider growth?',
-        required=False, choices=[(True, "Tak"), (False, "Nie")])
+        widget=forms.CheckboxInput,
+        label='Consider growth?',
+        required=False,
+        choices=[(True, "Yes"), (False, "No")])
     filter_form.form.fields['checkbox_gold_cost'] = forms.ChoiceField(
-        widget=forms.CheckboxInput, label='Consider cost?',
-        required=False, choices=[(True, "Tak"), (False, "Nie")])
+        widget=forms.CheckboxInput,
+        label='Consider cost?',
+        required=False,
+        choices=[(True, "Yes"), (False, "No")])
     filter_form.form.helper = UnitFilterDoubleFormHelper()
 
     column_filter = UnitFilterDouble(column_filter_request, Unit.objects.all())
-    vs_units = column_filter.qs
-    vs_units_pks = [x.pk for x in vs_units]
+    col_units = column_filter.qs
+    col_units_pks = [x.pk for x in col_units]
 
     data = Fights.objects.all()
 
     row_filter = UnitFilterDouble(row_filter_request, Unit.objects.all())
-    units_to_show = set([x.pk for x in row_filter.qs])
+    row_units = set([x.pk for x in row_filter.qs])
 
     growths = [x.growth + x.horde_growth for x in Unit.objects.all()]
 
     costs = [x.gold_cost for x in Unit.objects.all()]
 
     pikeman_fights = [getattr(data.get(pk=1), 'vs' + str(i))
-                      for i in vs_units_pks]
+                      for i in col_units_pks]
 
     if request.GET.get('checkbox_growth', None) == 'on':
         for i in range(len(pikeman_fights)):
             pikeman_fights[i] = pikeman_fights[i] / \
-                growths[0] * growths[vs_units_pks[i]-1]
+                growths[0] * growths[col_units_pks[i]-1]
     if request.GET.get('checkbox_gold_cost', None) == 'on':
         for i in range(len(pikeman_fights)):
             pikeman_fights[i] = pikeman_fights[i] * \
-                costs[0] / costs[vs_units_pks[i]-1]
+                costs[0] / costs[col_units_pks[i]-1]
     base_value = sum(1 / x for x in pikeman_fights)
 
     table_data = []
     for x in data:
-        if x.pk in units_to_show:
+        if x.pk in row_units:
             x_dict = {'id': x.id, 'unit': x.unit, 'value': None}
             for i in range(1, 142):
                 attr_name = 'vs' + str(i)
@@ -70,9 +85,9 @@ def index(request):
                 if request.GET.get('checkbox_gold_cost', None) == 'on':
                     x_dict[attr_name] = x_dict[attr_name] * \
                         costs[x.pk-1] / costs[i-1]
-            if vs_units_pks:
+            if col_units_pks:
                 x_value = int(sum(1 / x_dict['vs' + str(i)]
-                                  for i in vs_units_pks) / base_value * 80)
+                                  for i in col_units_pks) / base_value * 80)
             else:
                 x_value = 0
             x_dict['value'] = x_value
@@ -82,7 +97,7 @@ def index(request):
 
     table = FightsTable(data=table_data)
     table.exclude = ['vs' + str(x)
-                     for x in range(1, 142) if x not in vs_units_pks]
+                     for x in range(1, 142) if x not in col_units_pks]
 
     RequestConfig(request, paginate={'per_page': 28}).configure(table)
 

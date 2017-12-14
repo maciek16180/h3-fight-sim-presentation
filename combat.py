@@ -175,10 +175,10 @@ def find_balance(nameA, nameB, num_iter, startA=None):
 
     x2 = B.count
 
-    # here binsearch from for balanced result
     low = min(x1, x2)
     high = max(x1, x2)
 
+    # here binsearch from [low, high] for balanced result
     while True:
         middle = low + (high - low) / 2
         B.count = middle

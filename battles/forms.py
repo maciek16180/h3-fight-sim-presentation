@@ -3,6 +3,7 @@ from crispy_forms.layout import Layout, Submit, Div, Field, HTML
 from crispy_forms.bootstrap import PrependedText, FormActions
 from django import forms
 from units.models import Unit
+from units.forms import MyInlineField, CustomMyInlineField
 
 
 class FightForm(forms.Form):
@@ -13,7 +14,7 @@ class FightForm(forms.Form):
     count2 = forms.IntegerField(label='B Count', min_value=1)
 
     num_fights = forms.IntegerField(
-        label='Num fights', min_value=1, initial=1000)
+        label='Number of fights', min_value=1, initial=1000, max_value=1000)
 
     def clean(self):
         cleaned_data = super(FightForm, self).clean()
@@ -28,16 +29,24 @@ class FightForm(forms.Form):
     helper.form_method = 'GET'
     helper.form_class = 'form-horizontal'
     helper.field_template = 'bootstrap3/layout/inline_field.html'
-    helper.layout = Layout(
+    helper.layout = Div(
         HTML('<h2>Combat simulator</h2>'),
-        'unit1',
-        'count1',
-        'unit2',
-        'count2',
-        'num_fights',
-        HTML('<br>'),
-        Submit('submit', 'Fight!'),
-        HTML('<br><br>'),
+        Div(
+            Div('unit1', style="float: left;"),
+            CustomMyInlineField('count1'),
+            style="margin-bottom: 0.5em"
+        ),
+        Div(
+            Div('unit2', style="float: left;"),
+            CustomMyInlineField('count2', style="margin-bottom: 0.5em")
+        ),
+        Div(
+            Div(
+                MyInlineField('num_fights'),
+                style="float: left; margin-top: 0.4em; margin-right: 2.8em;"),
+            Submit('submit', 'Fight!'),
+        ),
+        style="margin-left: 1em; margin-bottom: 0.5em;"
     )
 
 
@@ -49,14 +58,14 @@ class BalanceForm(forms.Form):
     count2 = forms.IntegerField(label='B Count', min_value=1, required=False)
 
     num_fights = forms.IntegerField(
-        label='Num fights', min_value=1, initial=1000)
+        label='Number of fights', min_value=1, initial=500, max_value=1000)
 
     def clean(self):
         cleaned_data = super(BalanceForm, self).clean()
 
         if self.cleaned_data['count1'] and self.cleaned_data['count2']:
             raise forms.ValidationError(
-                'Fixing both counts doesn\'t make sense.')
+                "Fixing both counts doesn't make sense.")
 
         return cleaned_data
 
@@ -64,14 +73,22 @@ class BalanceForm(forms.Form):
     helper.form_method = 'GET'
     helper.form_class = 'form-horizontal'
     helper.field_template = 'bootstrap3/layout/inline_field.html'
-    helper.layout = Layout(
+    helper.layout = Div(
         HTML('<h2>Find balance</h2>'),
-        'unit1',
-        'count1',
-        'unit2',
-        'count2',
-        'num_fights',
-        HTML('<br>'),
-        Submit('submit', 'Submit'),
-        HTML('<br><br>'),
+        Div(
+            Div('unit1', style="float: left;"),
+            CustomMyInlineField('count1'),
+            style="margin-bottom: 0.5em"
+        ),
+        Div(
+            Div('unit2', style="float: left;"),
+            CustomMyInlineField('count2', style="margin-bottom: 0.5em")
+        ),
+        Div(
+            Div(
+                MyInlineField('num_fights'),
+                style="float: left; margin-top: 0.4em; margin-right: 2.8em;"),
+            Submit('submit', 'Find out!'),
+        ),
+        style="margin-left: 1em; margin-bottom: 0.5em;"
     )
