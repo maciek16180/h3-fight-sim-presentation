@@ -34,7 +34,7 @@ gold_cost_filter = lambda: django_filters.NumericRangeFilter(
     label='Gold',
     widget=NumberRangeWidget(attrs={
         'min': '0',
-        'max': Unit.objects.latest('gold_cost').gold_cost * 100,
+        'max': 30000 * 100,
         'step': '10',
         'style': 'width: 7.12em'}))
 

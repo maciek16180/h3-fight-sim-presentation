@@ -25,42 +25,42 @@ keywords = {'DOUBLE_WIDE',
             'cusELEMENTAL',
             'cusGOLEM'}
 
-haters = {(u'Anioł', u'Arcydiabeł'),
-          (u'Anioł', u'Diabeł'),
-          (u'Archanioł', u'Arcydiabeł'),
-          (u'Archanioł', u'Diabeł'),
-          (u'Arcydiabeł', u'Anioł'),
-          (u'Arcydiabeł', u'Archanioł'),
-          (u'Czarny smok', u'Gigant'),
-          (u'Czarny smok', u'Tytan'),
-          (u'Diabeł', u'Anioł'),
-          (u'Diabeł', u'Archanioł'),
-          (u'Dżinn', u'Ifryt'),
-          (u'Dżinn', u'Sułtański ifryt'),
-          (u'Ifryt', u'Dżinn'),
-          (u'Ifryt', u'Wielki dżinn'),
-          (u'Sułtański ifryt', u'Dżinn'),
-          (u'Sułtański ifryt', u'Wielki dżinn'),
-          (u'Tytan', u'Czarny smok'),
-          (u'Wielki dżinn', u'Ifryt'),
-          (u'Wielki dżinn', u'Sułtański ifryt')}
+haters = {(u'Angel', u'Arch Devil'),
+          (u'Angel', u'Devil'),
+          (u'Archangel', u'Arch Devil'),
+          (u'Archangel', u'Devil'),
+          (u'Arch Devil', u'Angel'),
+          (u'Arch Devil', u'Archangel'),
+          (u'Black Dragon', u'Giant'),
+          (u'Black Dragon', u'Titan'),
+          (u'Devil', u'Angel'),
+          (u'Devil', u'Archangel'),
+          (u'Genie', u'Efreet'),
+          (u'Genie', u'Efreet Sultan'),
+          (u'Efreet', u'Genie'),
+          (u'Efreet', u'Master Genie'),
+          (u'Efreet Sultan', u'Genie'),
+          (u'Efreet Sultan', u'Master Genie'),
+          (u'Titan', u'Black Dragon'),
+          (u'Master Genie', u'Efreet'),
+          (u'Master Genie', u'Efreet Sultan')}
 
-elementals = {(u'Żywiołak burzy', u'Żywiołak magmy'),
-              (u'Żywiołak burzy', u'Żywiołak ziemi'),
-              (u'Żywiołak energii', u'Żywiołak lodu'),
-              (u'Żywiołak energii', u'Żywiołak wody'),
-              (u'Żywiołak lodu', u'Żywiołak energii'),
-              (u'Żywiołak lodu', u'Żywiołak ognia'),
-              (u'Żywiołak magmy', u'Żywiołak burzy'),
-              (u'Żywiołak magmy', u'Żywiołak powietrza'),
-              (u'Żywiołak ognia', u'Żywiołak lodu'),
-              (u'Żywiołak ognia', u'Żywiołak wody'),
-              (u'Żywiołak powietrza', u'Żywiołak magmy'),
-              (u'Żywiołak powietrza', u'Żywiołak ziemi'),
-              (u'Żywiołak wody', u'Żywiołak energii'),
-              (u'Żywiołak wody', u'Żywiołak ognia'),
-              (u'Żywiołak ziemi', u'Żywiołak burzy'),
-              (u'Żywiołak ziemi', u'Żywiołak powietrza')}
+elementals = {(u'Storm Elemental', u'Magma Elemental'),
+              (u'Storm Elemental', u'Earth Elemental'),
+              (u'Energy Elemental', u'Ice Elemental'),
+              (u'Energy Elemental', u'Water Elemental'),
+              (u'Ice Elemental', u'Energy Elemental'),
+              (u'Ice Elemental', u'Fire Elemental'),
+              (u'Magma Elemental', u'Storm Elemental'),
+              (u'Magma Elemental', u'Air Elemental'),
+              (u'Fire Elemental', u'Ice Elemental'),
+              (u'Fire Elemental', u'Water Elemental'),
+              (u'Air Elemental', u'Magma Elemental'),
+              (u'Air Elemental', u'Earth Elemental'),
+              (u'Water Elemental', u'Energy Elemental'),
+              (u'Water Elemental', u'Fire Elemental'),
+              (u'Earth Elemental', u'Storm Elemental'),
+              (u'Earth Elemental', u'Air Elemental')}
 
 
 def binomial(n, p):
@@ -119,11 +119,11 @@ class Stack(object):
         self.weakened = 0
 
         self.cap = self.count
-        self.rebirth_available = self.name == u'Feniks' or False
+        self.rebirth_available = self.name == u'Phoenix' or False
         self.magic_resist = 0.
-        if self.name == u'Krasnoludzki wojownik':
+        if self.name == u'Battle Dwarf':
             self.magic_resist == .4
-        elif self.name in [u'Krasnolud', u'Kryształowy smok']:
+        elif self.name in [u'Dwarf', u'Crystal Dragon']:
             self.magic_resist = .2
 
     def take_dmg(self, dmg):
@@ -135,7 +135,7 @@ class Stack(object):
             self.count -= num_killed + 1
             self.hp_left = self.hp - rem
             self.count = max(self.count, 0)
-        if self.name == u'Feniks' and not self.is_alive() \
+        if self.name == u'Phoenix' and not self.is_alive() \
                 and self.rebirth_available:
             self.rebirth()
 
@@ -149,9 +149,9 @@ class Stack(object):
                             for _ in range(10)]) * self.count / 10
 
         defense = other.defense
-        if self.name == u'Behemot':
+        if self.name == u'Behemoth':
             defense = int(.6 * defense)
-        elif self.name == u'Starożytny behemot':
+        elif self.name == u'Ancient Behemoth':
             defense = int(.2 * defense)
 
         att_to_def = self.attack - defense
@@ -173,18 +173,18 @@ class Stack(object):
         if melee_penalty:
             dmg_reductions.append(.5)
 
-        if self.name == u'Upiorny rycerz' and random() < .2:
+        if self.name == u'Dread Knight' and random() < .2:
             dmg_bonus += 1.
         elif other.name in self.hates:
             dmg_bonus += .5
         elif other.name in self.opp_elem:
             dmg_bonus += 1.
 
-        if self.name == u'Żywiołak magii' and other.spell_immunity() == 5:
+        if self.name == u'Magic Elemental' and other.spell_immunity() == 5:
             dmg_reductions.append(.5)
-        elif self.name == u'Żywiołak umysłu' and (
+        elif self.name == u'Psychic Elemental' and (
                 other.is_nonliving() or other.name in
-                [u'Gigant', u'Tytan', u'Czarny smok']):
+                [u'Giant', u'Titan', u'Black Dragon']):
             dmg_reductions.append(.5)
 
         damage = base_dmg * (1. + dmg_bonus)
@@ -198,48 +198,48 @@ class Stack(object):
         damage = int(damage)
         other.take_dmg(damage)
 
-        if (self.name == u'Wampirzy lord' and
+        if (self.name == u'Vampire Lord' and
                 not other.is_nonliving()):
             self.drain_life(damage)
-        elif (self.name == u'Wielka gorgona' and
+        elif (self.name == u'Mighty Gorgon' and
                 not other.is_nonliving()):
             self.death_stare(other)
-        elif (self.name == u'Ptak gromu' and
-              other.name not in [u'Żywiołak ziemi', u'Żywiołak magmy'] and
+        elif (self.name == u'Thunderbird' and
+              other.name not in [u'Earth Elemental', u'Magma Elemental'] and
               random() < .2 and
               other.spell_immunity() < 2 and
               random() > other.magic_resist):
             self.thunderbolt(other)
-        elif self.name == u'Rdzawy smok':
+        elif self.name == u'Rust Dragon':
             self.acid_breath(other)
-        elif (self.name == u'Upiorny smok' and
+        elif (self.name == u'Ghost Dragon' and
               not other.is_nonliving() and
               random() < .2):
             other.start_aging()
-        elif (self.name == u'Wiwerna królewska' and
+        elif (self.name == u'Wyvern Monarch' and
                 not other.is_nonliving() and
                 random() < .2 and
                 other.times_poisoned < 5):
             other.start_poison()
-        elif (self.name in [u'Czarny rycerz', u'Upiorny rycerz', u'Mumia'] and
+        elif (self.name in [u'Black Knight', u'Dread Knight', u'Mummy'] and
               not other.is_undead() and
               other.spell_immunity < 1 and
               random() > other.magic_resist and
               other.name not in [
-                  u'Ifryt', u'Sułtański ifryt', u'Żywiołak ognia',
-                  u'Żywiołak energii', u'Ognisty ptak', u'Feniks']):
-            if ((self.name == u'Mumia' and random() < .5) or
-                    (self.name != u'Mumia' and random() < .2)):
+                  u'Efreet', u'Efreet Sultan', u'Fire Elemental',
+                  u'Energy Elemental', u'Firebird', u'Phoenix']):
+            if ((self.name == u'Mummy' and random() < .5) or
+                    (self.name != u'Mummy' and random() < .2)):
                 self.start_curse(other)
-        elif (self.name == u'Smocza ważka' and
+        elif (self.name == u'Dragon Fly' and
               other.spell_immunity < 2 and
               random() > other.magic_resist):
             self.start_weakness(other)
 
-        if (other.name == u'Sułtański ifryt' and
+        if (other.name == u'Efreet Sultan' and
             self.name not in [
-                u'Ifryt', u'Sułtański ifryt', u'Żywiołak ognia',
-                u'Żywiołak energii', u'Ognisty ptak', u'Feniks']):
+                u'Efreet', u'Efreet Sultan', u'Fire Elemental',
+                u'Energy Elemental', u'Firebird', u'Phoenix']):
             self.efreet_fire_shield(fire_shield_damage)
 
     def attack_range(self, other, dmg_bonus=0., range_penalty=False):
@@ -256,7 +256,7 @@ class Stack(object):
         self.shots -= 1
 
     def start_weakness(self, other):
-        assert self.name == u'Smocza ważka' and other.weakened == 0
+        assert self.name == u'Dragon Fly' and other.weakened == 0
         if self.speed > other.speed:
             other.weakened = 3
         elif self.speed < other.speed:
@@ -272,7 +272,7 @@ class Stack(object):
             self.attack = self.true_attack
 
     def start_curse(self, other):
-        assert self.name in [u'Mumia', u'Czarny rycerz', u'Upiorny rycerz']
+        assert self.name in [u'Mummy', u'Black Knight', u'Dread Knight']
         if self.speed > other.speed:
             other.cursed = 3
         elif self.speed < other.speed:
@@ -326,7 +326,7 @@ class Stack(object):
             self.hp_left = max(1, self.hp - hp_missing)
 
     def drain_life(self, damage_dealt):
-        assert self.name == u'Wampirzy lord'
+        assert self.name == u'Vampire Lord'
         if self.hp_left + damage_dealt <= self.hp:
             self.hp_left += damage_dealt
         else:
@@ -344,48 +344,47 @@ class Stack(object):
             other.take_dmg(25 * self.count)
 
     def magic_dmg_resistance(self):
-        if self.name == u'Kamienny golem':
+        if self.name == u'Stone Golem':
             return .5
-        elif self.name == u'Żelazny golem':
+        elif self.name == u'Iron Golem':
             return .75
-        elif self.name == u'Złoty golem':
+        elif self.name == u'Gold Golem':
             return .85
-        elif self.name == u'Diamentowy golem':
+        elif self.name == u'Diamond Golem':
             return .95
         return 0.
 
     def spell_immunity(self):
-        if self.name == u'Złoty smok':
+        if self.name == u'Gold Dragon':
             return 4
-        elif self.name in [u'Czarny smok', u'Żywiołak magii']:
+        elif self.name in [u'Black Dragon', u'Magic Elemental']:
             return 5
-        elif self.name in [u'Zielony smok', u'Czerwony smok',
-                           u'Błękitny smok']:
+        elif self.name in [u'Green Dragon', u'Red Dragon', u'Azure Dragon']:
             return 3
         return 0
 
     def efreet_fire_shield(self, damage):
         damage *= (1. - self.magic_dmg_resistance())
-        if self.name in [u'Żywiołak wody', u'Żywiołak lodu']:
+        if self.name in [u'Water Elemental', u'Ice Elemental']:
             damage *= 2
         self.take_dmg(int(damage))
 
     def thunderbolt(self, other):
-        assert self.name == u'Ptak gromu'
+        assert self.name == u'Thunderbird'
         damage = 10 * self.count
         damage *= (1 - other.magic_dmg_resistance())
-        if self.name in [u'Żywiołak powietrza', u'Żywiołak burzy']:
+        if self.name in [u'Air Elemental', u'Storm Elemental']:
             damage *= 2
         other.take_dmg(int(damage))
 
     def death_stare(self, other):
-        assert self.name == u'Wielka gorgona' and not other.is_nonliving()
+        assert self.name == u'Mighty Gorgon' and not other.is_nonliving()
         to_death_stare = min(binomial(n=self.count, p=.1),
                              (self.count + 9) / 10)
         other.count = max(0, other.count - to_death_stare)
 
     def rebirth(self):
-        assert (self.name == u'Feniks' and not self.is_alive() and
+        assert (self.name == u'Phoenix' and not self.is_alive() and
                 self.rebirth_available)
         certain, rem = divmod(self.count, 5)
         to_rebirth = certain + (random() < .2*rem)
@@ -393,7 +392,7 @@ class Stack(object):
         self.rebirth_available = False
 
     def regenerate(self):
-        assert self.name in [u'Zjawa', u'Upiór', u'Troll']
+        assert self.name in [u'Wight', u'Wraith', u'Troll']
         self.hp_left = self.hp
 
     def is_alive(self):
@@ -419,7 +418,7 @@ class Stack(object):
         return 'const_free_attack' in self.attributes
 
     def range_penalty(self):
-        return self.is_shooter() and self.name != 'Strzelec'
+        return self.is_shooter() and self.name != 'Sharpshooter'
 
     def is_elemental(self):
         return 'cusELEMENTAL' in self.attributes

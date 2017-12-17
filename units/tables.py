@@ -1,6 +1,15 @@
-from django_tables2 import Table
 from .models import Unit
+from battles.tables import col_style
+
 from django.utils.safestring import mark_safe
+from django.utils.html import format_html, escape
+from django.utils import six
+
+from django_tables2 import Table
+from django_tables2.columns import BooleanColumn
+from django_tables2.utils import AttributeDict
+
+from types import MethodType
 
 
 class UnitTable(Table):
@@ -12,6 +21,20 @@ class UnitTable(Table):
 
     def __init__(self, *args, **kwargs):
         super(UnitTable, self).__init__(*args, **kwargs)
+
+        def bool_colored_render(self, value, record, bound_column):
+            value = self._get_bool_value(record, value, bound_column)
+            if value:
+                color = ' style="color: green; font-size: 150%;" '
+            else:
+                color = ' style="color: red; font-size: 80%;" '
+
+            text = self.yesno[int(not value)]
+            return mark_safe('<a %s>%s</a>' % (color, text))
+
         for key in self.base_columns.keys():
             if key not in ['name', 'id']:
-                self.base_columns[key].attrs['td'] = {'align': 'center'}
+                col = self.base_columns[key]
+                col.attrs.update(col_style())
+                if type(col) is BooleanColumn:
+                    col.render = MethodType(bool_colored_render, col)

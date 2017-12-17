@@ -14,7 +14,7 @@ class FightForm(forms.Form):
     count2 = forms.IntegerField(label='B Count', min_value=1)
 
     num_fights = forms.IntegerField(
-        label='Number of fights', min_value=1, initial=1000, max_value=1000)
+        label='Number of fights', min_value=1, initial=100, max_value=1000)
 
     def clean(self):
         cleaned_data = super(FightForm, self).clean()

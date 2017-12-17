@@ -26,7 +26,7 @@ class Unit(models.Model):
     shots = models.IntegerField()
     spells = models.IntegerField()
 
-    town = models.ForeignKey(Town, on_delete=models.CASCADE, default=0)
+    town = models.ForeignKey(Town, on_delete=models.CASCADE)
     level = models.PositiveSmallIntegerField(default=0)
     upgraded = models.BooleanField(default=False, verbose_name='Upgraded?')
 

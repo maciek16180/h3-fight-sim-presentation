@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from units.models import Unit, Town
 import pandas as pd
 
@@ -12,7 +9,14 @@ crap = ['Plural', 'Wood', 'Mercury', 'Ore', 'Sulfur', 'Crystal', 'Gems',
 data.drop(crap, axis=1, inplace=True)
 
 
-for row in data.values[:-5]:
+for name in [u'Castle', u'Rampart', u'Tower', u'Inferno', u'Necropolis',
+             u'Dungeon', u'Stronghold', u'Fortress', u'Conflux', u'Neutral']:
+    t = Town()
+    t.name = name
+    t.save()
+
+for uid, row in enumerate(data.values[:-5]):
+    uid = uid + 1
     u = Unit()
     (u.name, u.gold_cost, u.fight_value, u.ai_value, u.growth, u.horde_growth,
      u.hp, u.speed, u.attack, u.defense, u.min_dmg, u.max_dmg, u.shots,
@@ -28,26 +32,14 @@ for row in data.values[:-5]:
     u.b_elemental = 'cusELEMENTAL' in attributes
     u.b_golem = 'cusGOLEM' in attributes
 
-    u.save()
-
-
-for name in [u'Zamek', u'Bastion', u'Forteca', u'Inferno', u'Nekropolia',
-             u'Loch', u'Twierdza', u'Cytadela', u'Wrota żywiołów',
-             u'Neutralne']:
-    t = Town()
-    t.name = name
-    t.save()
-
-
-for unit in Unit.objects.all():
-    if unit.id <= 126:
-        unit.town_id = (unit.id - 1) / 14 + 1
-        unit.level = ((unit.id - 1) / 2) % 7 + 1
-        unit.upgraded = bool((unit.id - 1) % 2)
+    if uid <= 126:
+        u.town_id = (uid - 1) / 14 + 1
+        u.level = ((uid - 1) / 2) % 7 + 1
+        u.upgraded = bool((uid - 1) % 2)
     else:
-        unit.town_id = 10
-        unit.upgraded = False
-        unit.level = [1, 1, 2, 2, 3, 3, 4, 5,
-                      5, 6, 6, 8, 10, 10, 10][unit.id-127]
+        u.town_id = 10
+        u.upgraded = False
+        u.level = [
+            1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6, 8, 10, 10, 10][uid-127]
 
-    unit.save()
+    u.save()

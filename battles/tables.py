@@ -4,6 +4,11 @@ from django.utils.safestring import mark_safe
 from units.models import Unit
 from types import MethodType
 
+col_style = lambda: {
+    'td': {"style": "text-align:center;"},
+    'th': {"style": "text-align:center;"}
+}
+
 
 class FightsTable(Table):
 
@@ -14,10 +19,14 @@ class FightsTable(Table):
         self.base_columns['id'] = Column()
         self.base_columns['unit'] = Column(order_by='unit.name')
         self.base_columns['gold_cost'] = Column(
-            attrs={'td': {'align': 'center'}}, verbose_name='Gold cost')
+            attrs=col_style(), verbose_name='Gold cost')
         self.base_columns['tot_growth'] = Column(
-            attrs={'td': {'align': 'center'}}, verbose_name='Total growth')
-        self.base_columns['value'] = Column(attrs={'td': {'align': 'center'}})
+            attrs=col_style(), verbose_name='Total growth')
+        self.base_columns['value'] = Column(attrs=col_style())
+        self.base_columns['value'].attrs['td'][
+            'style'] += "border-right: solid 1px #e2e2e2;"
+        self.base_columns['value'].attrs['th'][
+            'style'] += "border-right: solid 1px #e2e2e2;"
 
         def new_render(field_name):
             def fn(_, value, record):
@@ -33,7 +42,7 @@ class FightsTable(Table):
 
         for vs_field in Fights._meta.fields[2:]:
             self.base_columns[vs_field.name] = Column(
-                vs_field.verbose_name, attrs={'td': {'align': 'center'}})
+                vs_field.verbose_name, attrs=col_style())
             col = self.base_columns[vs_field.name]
             col.render = MethodType(new_render(vs_field.name), col)
 

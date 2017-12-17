@@ -18,7 +18,7 @@ def fight(stackA, stackB, num_iter):
         return temp
 
     def melee_hit(current, other):
-        if (other.name == u'Błękitny smok' and
+        if (other.name == u'Azure Dragon' and
                 not current.is_nonliving() and
                 random() < .1):
             return other, current
@@ -36,7 +36,7 @@ def fight(stackA, stackB, num_iter):
             current.curse()
         elif current.weakened > 0:
             current.weakness()
-        if other.name in [u'Zjawa', u'Upiór', u'Troll'] and other.is_alive():
+        if other.name in [u'Wight', u'Wraith', u'Troll'] and other.is_alive():
             other.regenerate()
 
         return other, current
@@ -46,7 +46,7 @@ def fight(stackA, stackB, num_iter):
         current.attack_range(other, range_penalty=penalty)
         if current.shoots_twice() and current.shots > 0:
             current.attack_range(other, range_penalty=penalty)
-        if other.name in [u'Zjawa', u'Upiór', u'Troll'] and other.is_alive():
+        if other.name in [u'Wight', u'Wraith', u'Troll'] and other.is_alive():
             other.regenerate()
         return other, current
 

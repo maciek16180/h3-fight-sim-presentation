@@ -43,6 +43,9 @@ class UnitFilterFormHelper(FormHelper):
         style="margin-left: 1em;"
     )
 
+    def __init__(self, *args, **kwargs):
+        super(UnitFilterFormHelper, self).__init__(*args, **kwargs)
+
 
 class UnitFilterDoubleFormHelper(FormHelper):
     form_method = 'GET'

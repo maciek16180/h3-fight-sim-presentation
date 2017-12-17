@@ -26,12 +26,11 @@ def index(request):
     filter_request = request.GET.copy()
 
     # initial filter to avoid long page loading
-    if 'col_name' not in filter_request:
-        filter_request['col_name'] = 'smok'
-        column_filter_request['col_name'] = 'smok'
-        init_name = True
-    else:
-        init_name = False
+    if not filter_request:  # if not submitted
+        filter_request['col_town'] = 2
+        column_filter_request['col_town'] = 2
+        filter_request['row_town'] = 1
+        row_filter_request['row_town'] = 1
 
     filter_form = UnitFilterDouble(filter_request, Unit.objects.all())
     filter_form.form.fields['checkbox_growth'] = forms.ChoiceField(
@@ -117,11 +116,11 @@ def combat(request):
             A = Stack(make_unit(data['unit1'].name), data['count1'])
             B = Stack(make_unit(data['unit2'].name), data['count2'])
             result = fight(A, B, data['num_fights'])
-            res1 = A.name + ': {}'.format(result[A.name][0])
-            res2 = B.name + ': {}'.format(result[B.name][0])
+            res1 = A.name + ': %i' % result[A.name][0]
+            res2 = B.name + ': %i' % result[B.name][0]
 
     else:
-        form = FightForm(initial={'num_fights': 1000})
+        form = FightForm()
 
     return render(request, 'battles/combat.html',
                   {'form': form, 'res1': res1, 'res2': res2})
@@ -144,10 +143,10 @@ def balance(request):
             name2 = nameB if count1 == countA else nameA
             result = find_balance(
                 name1, name2, data['num_fights'], startA=count1)
-            res = u'{} {} \u2248 {} {}'.format(
-                result[idxA], nameA, result[idxB], nameB)
+            res = u'%g %s \u2248 %g %s' % (
+                round(result[idxA], 3), nameA, round(result[idxB], 3), nameB)
 
     else:
-        form = BalanceForm(initial={'num_fights': 1000})
+        form = BalanceForm()
 
     return render(request, 'battles/balance.html', {'form': form, 'res': res})

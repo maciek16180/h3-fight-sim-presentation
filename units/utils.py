@@ -12,7 +12,7 @@ class PagedFilteredTableView(SingleTableView):
     context_filter_name = 'filter'
 
     def get_queryset(self, **kwargs):
-        qs = super(PagedFilteredTableView, self).get_queryset()
+        qs = super(PagedFilteredTableView, self).get_queryset().order_by('id')
         self.filter = self.filter_class(self.request.GET, queryset=qs)
         self.filter.form.helper = self.formhelper_class()
         return self.filter.qs

@@ -5,12 +5,18 @@
 {% load render_table from django_tables2 %}
 {% load crispy_forms_tags %}
 
+<style type="text/css">
+  tr:hover { background-color: #ffff99; }
+</style>
+
 {% block content %}
 
     <hr/>
 
     {% crispy filter.form filter.form.helper %}
 
-    {% render_table table %}
+    <div style="margin-left: 1em; margin-right: 1em">
+        {% render_table table %}
+    </div>
 
 {% endblock content %}

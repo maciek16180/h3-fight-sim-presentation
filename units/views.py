@@ -17,3 +17,6 @@ class IndexView(PagedFilteredTableView):
     paginate_by = 28
     filter_class = UnitFilter
     formhelper_class = UnitFilterFormHelper
+
+    def __init__(self, *args, **kwargs):
+        super(IndexView, self).__init__(*args, **kwargs)
