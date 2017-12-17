@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from random import random
 from copy import copy
 from unit import make_unit, Stack
@@ -164,6 +161,7 @@ def find_balance(nameA, nameB, num_iter, startA=None):
     while not enough:
         x1 = B.count
         B.count += change
+        B.cap += change
         res = fight(A, B, num_iter)
         B_won = res[A.name][0] < res[B.name][0]
         enough = B_won != B_won_last
@@ -182,6 +180,7 @@ def find_balance(nameA, nameB, num_iter, startA=None):
     while True:
         middle = low + (high - low) / 2
         B.count = middle
+        B.cap = middle
         res = fight(A, B, num_iter)
         if balanced(res) or abs(high - low) <= 1:
             return A.count, max(B.count, 1)

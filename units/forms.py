@@ -1,6 +1,6 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Fieldset, HTML, \
-    MultiField, Field, Div
+    MultiField, Field, Div, ButtonHolder
 from crispy_forms.bootstrap import InlineField
 from django import forms
 
@@ -33,9 +33,12 @@ class UnitFilterFormHelper(FormHelper):
                     style="margin-bottom: 0.5em;"),
                 Div(MyInlineField('level'),
                     style="margin-bottom: 1.5em; margin-right: 1em;"),
-                Div(
+                ButtonHolder(
                     Submit('submit', 'Apply Filter'),
-                    style="margin-left: 16em;"
+                    HTML("{% load querystring from django_tables2 %}\n"
+                         "<a style='margin-left:2em;' href={% querystring '_export'='csv' %}>"
+                         "<input type='button' value='Export'></a>"),
+                    style="margin-left: 16em;",
                 ),
             ),
             style="width: 27em;"
@@ -94,7 +97,13 @@ class UnitFilterDoubleFormHelper(FormHelper):
                 Field('checkbox_gold_cost'),
                 style="float:left; margin-right: 2em;"
             ),
-            Submit('submit', 'Apply Filter'),
+            ButtonHolder(
+                Submit('submit', 'Apply Filter'),
+                HTML("{% load querystring from django_tables2 %}\n"
+                     "<a style='margin-left:2em;' href={% querystring '_export'='csv' %}>"
+                     "<input type='button' value='Export'></a>"),
+                style="margin-left: 16em;",
+            ),
             style="margin-left: 5em;"
         ),
         style="margin-left: 1em; margin-bottom: 1em;"

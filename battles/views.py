@@ -1,14 +1,19 @@
+from django import forms
 from django.shortcuts import render
+
+from django_tables2 import RequestConfig
+from django_tables2.export.export import TableExport
+
+from .models import Fights
+from .tables import FightsTable
+from .forms import FightForm, BalanceForm
+
 from units.filters import UnitFilterDouble
 from units.forms import UnitFilterDoubleFormHelper
 from units.models import Unit
-from .models import Fights
-from .tables import FightsTable
-from django_tables2 import RequestConfig
-from django import forms
-from combat import fight, find_balance
+
 from unit import make_unit, Stack
-from .forms import FightForm, BalanceForm
+from combat import fight, find_balance
 
 
 def index(request):
@@ -99,6 +104,15 @@ def index(request):
                      for x in range(1, 142) if x not in col_units_pks]
 
     RequestConfig(request, paginate={'per_page': 28}).configure(table)
+
+    export_format = request.GET.get('_export', None)
+    print("""""""s")
+    print(export_format)
+    if export_format == 'Export':
+        export_format = 'csv'
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response('battles.{}'.format(export_format))
 
     return render(request, 'battles/index.html',
                   {'table': table, 'form': filter_form.form})

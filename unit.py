@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import pandas as pd
 from math import ceil
 from random import random, randint
@@ -188,8 +185,8 @@ class Stack(object):
             dmg_reductions.append(.5)
 
         damage = base_dmg * (1. + dmg_bonus)
-        # tarcza ognia bierze pod uwagę obrażenia przed redukcjami,
-        # obrażenia zadane to najwyżej 20% życia oddziału ifrytów
+        # fire shield looks at damage before reductions
+        # damage dealt is at most 20% of total HP of Efreet stack
         fire_shield_damage = .2 * \
             min(damage, (other.count - 1) * other.hp + other.hp_left)
         for reduction in dmg_reductions:

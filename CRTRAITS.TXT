@@ -21,7 +21,7 @@ Wood Elf,Wood Elves,0,0,0,0,0,0,200,195,234,7,0,15,6,9,5,3,5,24,0,12,25,,SHOOTIN
 Grand Elf,Grand Elves,0,0,0,0,0,0,225,195,331,7,0,15,7,9,5,3,5,24,0,12,20,Strzela dwukrotnie.,SHOOTING_ARMY | const_two_attacks
 Pegasus,Pegasi,0,0,0,0,0,0,250,407,518,5,0,30,8,9,8,5,9,0,0,10,20,Zwiększa koszt zakleć wrogiego bohatera.,DOUBLE_WIDE | FLYING_ARMY
 Silver Pegasus,Silver Pegasi,0,0,0,0,0,0,275,418,532,5,0,30,12,9,10,5,9,0,0,10,16,Zwiększa koszt zakleć wrogiego bohatera.,DOUBLE_WIDE | FLYING_ARMY
-Dendroid,Dendroids,0,0,0,0,0,0,350,690,517,3,2,55,3,9,12,10,14,0,0,8,16,Oplatające korzenie.,0
+Dendroid Guard,Dendroid Guards,0,0,0,0,0,0,350,690,517,3,2,55,3,9,12,10,14,0,0,8,16,Oplatające korzenie.,0
 Dendroid Soldier,Dendroid Soldiers,0,0,0,0,0,0,425,765,803,3,2,65,4,9,12,10,14,0,0,8,12,Oplatające korzenie.,0
 Unicorn,Unicorns,0,0,0,0,0,0,850,1548,1806,2,0,90,7,15,14,18,22,0,0,5,12,Aura antymagiczna.  Oślepia wrogów.,DOUBLE_WIDE
 War Unicorn,War Unicorns,0,0,0,0,0,0,950,1740,2030,2,0,110,9,15,14,18,22,0,0,5,10,Aura antymagiczna.  Oślepia wrogów.,DOUBLE_WIDE

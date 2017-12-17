@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django_tables2 import RequestConfig
+from django_tables2.export.views import ExportMixin
 from django.views.generic import TemplateView
 
 from .models import Unit
@@ -9,7 +10,8 @@ from .forms import UnitFilterFormHelper
 from .utils import PagedFilteredTableView
 
 
-class IndexView(PagedFilteredTableView):
+
+class IndexView(ExportMixin, PagedFilteredTableView):
 
     model = Unit
     table_class = UnitTable
