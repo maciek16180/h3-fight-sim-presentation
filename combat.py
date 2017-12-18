@@ -24,8 +24,8 @@ def fight(stackA, stackB, num_iter):
         if not current.is_stunned():
             stun_break_bonus = (other.is_stunned() and
                                 not other.stunned_from_retaliation)
-            recovery_blind = other.blinded > 0
-            recovery_paralyze = other.paralyzed > 0
+            recovery_blindness = other.blinded > 0
+            recovery_paralysis = other.paralyzed > 0
 
             dmg_reductions = []
             if other.petrified:
@@ -40,9 +40,9 @@ def fight(stackA, stackB, num_iter):
                     not current.no_retaliation()
                     and not other.is_stunned()):
                 retaliation_dmg_reductions = []
-                if recovery_paralyze:
+                if recovery_paralysis:
                     retaliation_dmg_reductions.append(.75)
-                elif recovery_blind:
+                elif recovery_blindness:
                     retaliation_dmg_reductions.append(.5)
                 other.attack_melee(
                     current,

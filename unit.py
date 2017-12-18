@@ -274,13 +274,13 @@ class Stack(object):
               other.name not in ['Troglodyte', 'Infernal Troglodyte',
                                  'Giant', 'Titan'] and
               random() < .2):
-            self.start_blind(other)
+            self.start_blindness(other)
             other.stunned_from_retaliation = retaliation
         elif (self.name == 'Scorpicore' and
               other.name not in ['Gold Dragon', 'Black Dragon',
                                  'Magic Elemental'] and
               random() < .2):
-            self.start_paralyze(other)
+            self.start_paralysis(other)
             other.stunned_from_retaliation = retaliation
 
         if (other.name == 'Efreet Sultan' and
@@ -363,7 +363,7 @@ class Stack(object):
         assert self.petrified > 0
         self.petrified -= 1
 
-    def start_blind(self, other):
+    def start_blindness(self, other):
         assert self.name in ['Unicorn', 'War Unicorn']
         if self.speed > other.speed:
             other.blinded = 3
@@ -372,11 +372,11 @@ class Stack(object):
         else:
             other.blinded = randint(2, 3)
 
-    def blind(self):
+    def blindness(self):
         assert self.blinded > 0
         self.blinded -= 1
 
-    def start_paralyze(self, other):
+    def start_paralysis(self, other):
         assert self.name == 'Scorpicore'
         if self.speed > other.speed:
             other.paralyzed = 3
@@ -385,7 +385,7 @@ class Stack(object):
         else:
             other.paralyzed = randint(2, 3)
 
-    def paralyze(self):
+    def paralysis(self):
         assert self.paralyzed > 0
         self.paralyzed -= 1
 
@@ -545,6 +545,6 @@ class Stack(object):
         elif self.petrified:
             self.petrification()
         elif self.blinded:
-            self.blind()
+            self.blindness()
         elif self.paralyzed:
-            self.paralyze()
+            self.paralysis()
