@@ -95,11 +95,9 @@ class Stack(object):
 
         self.hp = unit.hp
         self.hp_left = self.hp
-        self.true_max_hp = self.hp
 
         self.speed = unit.speed
         self.attack = unit.attack
-        self.true_attack = self.attack
         self.defense = unit.defense
         self.dmg_min = unit.dmg_min
         self.dmg_max = unit.dmg_max
@@ -109,19 +107,36 @@ class Stack(object):
         self.ai_value = unit.ai_value
         self.hates = unit.hates
         self.opp_elem = unit.opp_elem
+
         self.aged = -1
         self.poisoned = -1
         self.times_poisoned = 0
         self.cursed = 0
         self.weakened = 0
+        self.diseased = 0
 
         self.cap = self.count
+        self.true_max_hp = self.hp
+        self.true_attack = self.attack
+        self.true_defense = self.defense
+
         self.rebirth_available = self.name == u'Phoenix' or False
-        self.magic_resist = 0.
+
         if self.name == u'Battle Dwarf':
             self.magic_resist == .4
         elif self.name in [u'Dwarf', u'Crystal Dragon']:
             self.magic_resist = .2
+        else:
+            self.magic_resist = 0.
+
+        if self.name == u'Gold Dragon':
+            self.spell_immunity = 4
+        elif self.name in [u'Black Dragon', u'Magic Elemental']:
+            self.spell_immunity = 5
+        elif self.name in [u'Green Dragon', u'Red Dragon', u'Azure Dragon']:
+            self.spell_immunity = 3
+        else:
+            self.spell_immunity = 0
 
     def take_dmg(self, dmg):
         if dmg < self.hp_left:
@@ -177,7 +192,7 @@ class Stack(object):
         elif other.name in self.opp_elem:
             dmg_bonus += 1.
 
-        if self.name == u'Magic Elemental' and other.spell_immunity() == 5:
+        if self.name == u'Magic Elemental' and other.spell_immunity == 5:
             dmg_reductions.append(.5)
         elif self.name == u'Psychic Elemental' and (
                 other.is_nonliving() or other.name in
@@ -204,7 +219,7 @@ class Stack(object):
         elif (self.name == u'Thunderbird' and
               other.name not in [u'Earth Elemental', u'Magma Elemental'] and
               random() < .2 and
-              other.spell_immunity() < 2 and
+              other.spell_immunity < 2 and
               random() > other.magic_resist):
             self.thunderbolt(other)
         elif self.name == u'Rust Dragon':
@@ -232,6 +247,9 @@ class Stack(object):
               other.spell_immunity < 2 and
               random() > other.magic_resist):
             self.start_weakness(other)
+        elif (self.name == u'Zombie' and
+              not other.is_nonliving()):
+            self.start_disease(other)
 
         if (other.name == u'Efreet Sultan' and
             self.name not in [
@@ -253,14 +271,14 @@ class Stack(object):
         self.shots -= 1
 
     def start_weakness(self, other):
-        assert self.name == u'Dragon Fly' and other.weakened == 0
+        assert self.name == u'Dragon Fly'
         if self.speed > other.speed:
             other.weakened = 3
         elif self.speed < other.speed:
             other.weakened = 2
         else:
             other.weakened = randint(2, 3)
-        other.attack = max(0, other.attack - 6)
+        other.attack = max(0, other.true_attack - 6)
 
     def weakness(self):
         assert self.weakened > 0
@@ -280,6 +298,24 @@ class Stack(object):
     def curse(self):
         assert self.cursed > 0
         self.cursed -= 1
+
+    def start_disease(self, other):
+        assert self.name == u'Zombie'
+        if self.speed > other.speed:
+            other.diseased = 3
+        elif self.speed < other.speed:
+            other.diseased = 2
+        else:
+            other.diseased = randint(2, 3)
+        other.attack = max(0, other.true_attack - 2)
+        other.defense = max(0, other.true_defense - 2)
+
+    def disease(self):
+        assert self.diseased > 0
+        self.diseased -= 1
+        if self.diseased == 0:
+            self.attack = self.true_attack
+            self.defense = self.true_defense
 
     def start_aging(self):
         was_already_aged = self.aged > 0
@@ -350,15 +386,6 @@ class Stack(object):
         elif self.name == u'Diamond Golem':
             return .95
         return 0.
-
-    def spell_immunity(self):
-        if self.name == u'Gold Dragon':
-            return 4
-        elif self.name in [u'Black Dragon', u'Magic Elemental']:
-            return 5
-        elif self.name in [u'Green Dragon', u'Red Dragon', u'Azure Dragon']:
-            return 3
-        return 0
 
     def efreet_fire_shield(self, damage):
         damage *= (1. - self.magic_dmg_resistance())

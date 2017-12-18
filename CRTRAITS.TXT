@@ -129,7 +129,7 @@ Peasant,Peasants,0,0,0,0,0,0,10,15,15,25,0,1,3,1,1,1,1,0,0,20,50,,0
 Halfling,Halflings,0,0,0,0,0,0,40,60,75,15,0,4,5,4,2,1,3,24,0,20,50,Przynosi szczęście.,SHOOTING_ARMY
 Rogue,Rogues,0,0,0,0,0,0,100,135,135,8,0,10,6,8,3,2,4,0,0,16,30,Szpieguje.,0
 Boar,Boars,0,0,0,0,0,0,150,145,145,8,0,15,6,6,5,2,3,0,0,16,30,,0
-Mummy,Mummies,0,0,0,0,0,0,300,270,270,7,0,30,5,7,7,3,5,0,0,12,25,Rzuca klątwy.,0
+Mummy,Mummies,0,0,0,0,0,0,300,270,270,7,0,30,5,7,7,3,5,0,0,12,25,Rzuca klątwy.,IS_UNDEAD
 Nomad,Nomads,0,0,0,0,0,0,200,285,345,7,0,30,7,9,8,2,6,0,0,12,25,Nie zwalnia na piasku.,0
 Sharpshooter,Sharpshooters,0,0,0,0,0,0,400,415,585,4,0,15,9,12,10,8,10,32,0,5,12,Brak ograniczeń za odległość lub osłonę.,SHOOTING_ARMY
 Troll,Trolls,0,0,0,0,0,0,500,1024,1024,3,0,40,7,14,7,10,15,0,0,8,12,Zdolność regeneracji.,0

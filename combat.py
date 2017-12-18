@@ -33,6 +33,8 @@ def fight(stackA, stackB, num_iter):
             current.curse()
         elif current.weakened > 0:
             current.weakness()
+        elif current.diseased > 0:
+            current.disease()
         if other.name in [u'Wight', u'Wraith', u'Troll'] and other.is_alive():
             other.regenerate()
 
