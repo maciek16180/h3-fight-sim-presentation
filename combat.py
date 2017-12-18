@@ -15,28 +15,61 @@ def fight(stackA, stackB, num_iter):
         return temp
 
     def melee_hit(current, other):
-        if (other.name == u'Azure Dragon' and
+        if (other.name == 'Azure Dragon' and
                 not current.is_nonliving() and
                 random() < .1):
             return other, current
-        current.attack_melee(other, melee_penalty=current.melee_penalty())
-        if other.is_alive() and not current.no_retaliation():
-            other.attack_melee(current, melee_penalty=other.melee_penalty())
-        if current.is_alive() and current.strikes_twice() and other.is_alive():
-            current.attack_melee(other)
 
-        if current.aged > 0 and current.is_alive():
-            current.age()
-        elif current.poisoned >= 0 and current.is_alive():
-            current.poison()
-        elif current.cursed > 0:
-            current.curse()
-        elif current.weakened > 0:
-            current.weakness()
-        elif current.diseased > 0:
-            current.disease()
-        if other.name in [u'Wight', u'Wraith', u'Troll'] and other.is_alive():
+        stun_break_bonus = False
+        if not current.is_stunned():
+            stun_break_bonus = (other.is_stunned() and
+                                not other.stunned_from_retaliation)
+            recovery_blind = other.blinded > 0
+            recovery_paralyze = other.paralyzed > 0
+
+            dmg_reductions = []
+            if other.petrified:
+                dmg_reductions.append(.5)
+
+            current.attack_melee(
+                other,
+                melee_penalty=current.melee_penalty(),
+                dmg_reductions=dmg_reductions)
+
+            if (other.is_alive() and
+                    not current.no_retaliation()
+                    and not other.is_stunned()):
+                retaliation_dmg_reductions = []
+                if recovery_paralyze:
+                    retaliation_dmg_reductions.append(.75)
+                elif recovery_blind:
+                    retaliation_dmg_reductions.append(.5)
+                other.attack_melee(
+                    current,
+                    melee_penalty=other.melee_penalty(),
+                    dmg_reductions=retaliation_dmg_reductions,
+                    retaliation=True)
+
+            if (current.is_alive() and
+                    current.strikes_twice() and
+                    other.is_alive() and
+                    not current.is_stunned()):
+                current.attack_melee(other)
+
+        current.advance_statuses()
+
+        if other.name in ['Wight', 'Wraith', 'Troll'] and other.is_alive():
             other.regenerate()
+
+        # other gets extra turn if stun just ended and it missed
+        # an action this combat round
+        if (stun_break_bonus and
+                not other.is_stunned() and
+                other.is_alive() and
+                current.is_alive() and
+                ((current.speed < other.speed) or
+                 (current.speed == other.speed and random() < .5))):
+            melee_hit(other, current)
 
         return other, current
 
@@ -45,7 +78,7 @@ def fight(stackA, stackB, num_iter):
         current.attack_range(other, range_penalty=penalty)
         if current.shoots_twice() and current.shots > 0:
             current.attack_range(other, range_penalty=penalty)
-        if other.name in [u'Wight', u'Wraith', u'Troll'] and other.is_alive():
+        if other.name in ['Wight', 'Wraith', 'Troll'] and other.is_alive():
             other.regenerate()
         return other, current
 

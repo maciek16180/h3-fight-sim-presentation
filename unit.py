@@ -4,7 +4,7 @@ from random import random, randint
 
 
 data = pd.read_csv('CRTRAITS.TXT', sep=',', encoding='utf-8')
-data.Attributes.values[data.Attributes.values == u'0'] = ''
+data.Attributes.values[data.Attributes.values == '0'] = ''
 
 crap = ['Plural', 'Wood', 'Mercury', 'Ore', 'Sulfur', 'Crystal', 'Gems',
         'Gold', 'Ability Text', 'Growth', 'Horde Growth', 'GuardsLow',
@@ -22,42 +22,42 @@ keywords = {'DOUBLE_WIDE',
             'cusELEMENTAL',
             'cusGOLEM'}
 
-haters = {(u'Angel', u'Arch Devil'),
-          (u'Angel', u'Devil'),
-          (u'Archangel', u'Arch Devil'),
-          (u'Archangel', u'Devil'),
-          (u'Arch Devil', u'Angel'),
-          (u'Arch Devil', u'Archangel'),
-          (u'Black Dragon', u'Giant'),
-          (u'Black Dragon', u'Titan'),
-          (u'Devil', u'Angel'),
-          (u'Devil', u'Archangel'),
-          (u'Genie', u'Efreet'),
-          (u'Genie', u'Efreet Sultan'),
-          (u'Efreet', u'Genie'),
-          (u'Efreet', u'Master Genie'),
-          (u'Efreet Sultan', u'Genie'),
-          (u'Efreet Sultan', u'Master Genie'),
-          (u'Titan', u'Black Dragon'),
-          (u'Master Genie', u'Efreet'),
-          (u'Master Genie', u'Efreet Sultan')}
+haters = {('Angel', 'Arch Devil'),
+          ('Angel', 'Devil'),
+          ('Archangel', 'Arch Devil'),
+          ('Archangel', 'Devil'),
+          ('Arch Devil', 'Angel'),
+          ('Arch Devil', 'Archangel'),
+          ('Black Dragon', 'Giant'),
+          ('Black Dragon', 'Titan'),
+          ('Devil', 'Angel'),
+          ('Devil', 'Archangel'),
+          ('Genie', 'Efreet'),
+          ('Genie', 'Efreet Sultan'),
+          ('Efreet', 'Genie'),
+          ('Efreet', 'Master Genie'),
+          ('Efreet Sultan', 'Genie'),
+          ('Efreet Sultan', 'Master Genie'),
+          ('Titan', 'Black Dragon'),
+          ('Master Genie', 'Efreet'),
+          ('Master Genie', 'Efreet Sultan')}
 
-elementals = {(u'Storm Elemental', u'Magma Elemental'),
-              (u'Storm Elemental', u'Earth Elemental'),
-              (u'Energy Elemental', u'Ice Elemental'),
-              (u'Energy Elemental', u'Water Elemental'),
-              (u'Ice Elemental', u'Energy Elemental'),
-              (u'Ice Elemental', u'Fire Elemental'),
-              (u'Magma Elemental', u'Storm Elemental'),
-              (u'Magma Elemental', u'Air Elemental'),
-              (u'Fire Elemental', u'Ice Elemental'),
-              (u'Fire Elemental', u'Water Elemental'),
-              (u'Air Elemental', u'Magma Elemental'),
-              (u'Air Elemental', u'Earth Elemental'),
-              (u'Water Elemental', u'Energy Elemental'),
-              (u'Water Elemental', u'Fire Elemental'),
-              (u'Earth Elemental', u'Storm Elemental'),
-              (u'Earth Elemental', u'Air Elemental')}
+elementals = {('Storm Elemental', 'Magma Elemental'),
+              ('Storm Elemental', 'Earth Elemental'),
+              ('Energy Elemental', 'Ice Elemental'),
+              ('Energy Elemental', 'Water Elemental'),
+              ('Ice Elemental', 'Energy Elemental'),
+              ('Ice Elemental', 'Fire Elemental'),
+              ('Magma Elemental', 'Storm Elemental'),
+              ('Magma Elemental', 'Air Elemental'),
+              ('Fire Elemental', 'Ice Elemental'),
+              ('Fire Elemental', 'Water Elemental'),
+              ('Air Elemental', 'Magma Elemental'),
+              ('Air Elemental', 'Earth Elemental'),
+              ('Water Elemental', 'Energy Elemental'),
+              ('Water Elemental', 'Fire Elemental'),
+              ('Earth Elemental', 'Storm Elemental'),
+              ('Earth Elemental', 'Air Elemental')}
 
 
 def binomial(n, p):
@@ -115,25 +115,30 @@ class Stack(object):
         self.weakened = 0
         self.diseased = 0
 
+        self.petrified = 0
+        self.blinded = 0
+        self.paralyzed = 0
+        self.stunned_from_retaliation = False
+
         self.cap = self.count
         self.true_max_hp = self.hp
         self.true_attack = self.attack
         self.true_defense = self.defense
 
-        self.rebirth_available = self.name == u'Phoenix' or False
+        self.rebirth_available = self.name == 'Phoenix' or False
 
-        if self.name == u'Battle Dwarf':
+        if self.name == 'Battle Dwarf':
             self.magic_resist == .4
-        elif self.name in [u'Dwarf', u'Crystal Dragon']:
+        elif self.name in ['Dwarf', 'Crystal Dragon']:
             self.magic_resist = .2
         else:
             self.magic_resist = 0.
 
-        if self.name == u'Gold Dragon':
+        if self.name == 'Gold Dragon':
             self.spell_immunity = 4
-        elif self.name in [u'Black Dragon', u'Magic Elemental']:
+        elif self.name in ['Black Dragon', 'Magic Elemental']:
             self.spell_immunity = 5
-        elif self.name in [u'Green Dragon', u'Red Dragon', u'Azure Dragon']:
+        elif self.name in ['Green Dragon', 'Red Dragon', 'Azure Dragon']:
             self.spell_immunity = 3
         else:
             self.spell_immunity = 0
@@ -147,7 +152,7 @@ class Stack(object):
             self.count -= num_killed + 1
             self.hp_left = self.hp - rem
             self.count = max(self.count, 0)
-        if self.name == u'Phoenix' and not self.is_alive() \
+        if self.name == 'Phoenix' and not self.is_alive() \
                 and self.rebirth_available:
             self.rebirth()
 
@@ -161,9 +166,9 @@ class Stack(object):
                             for _ in range(10)]) * self.count / 10
 
         defense = other.defense
-        if self.name == u'Behemoth':
+        if self.name == 'Behemoth':
             defense = int(.6 * defense)
-        elif self.name == u'Ancient Behemoth':
+        elif self.name == 'Ancient Behemoth':
             defense = int(.2 * defense)
 
         att_to_def = self.attack - defense
@@ -176,27 +181,28 @@ class Stack(object):
 
         return base_dmg, base_dmg_bonus, base_dmg_reduction
 
-    def attack_melee(self, other, dmg_bonus=0., melee_penalty=False):
+    def attack_melee(self, other, dmg_bonus=0., dmg_reductions=[],
+                     melee_penalty=False, retaliation=False):
         base_dmg, base_dmg_bonus, base_dmg_reduction = \
             self.__calc_base_damage(other)
         dmg_bonus += base_dmg_bonus
-        dmg_reductions = [base_dmg_reduction]
+        dmg_reductions += [base_dmg_reduction]
 
         if melee_penalty:
             dmg_reductions.append(.5)
 
-        if self.name == u'Dread Knight' and random() < .2:
+        if self.name == 'Dread Knight' and random() < .2:
             dmg_bonus += 1.
         elif other.name in self.hates:
             dmg_bonus += .5
         elif other.name in self.opp_elem:
             dmg_bonus += 1.
 
-        if self.name == u'Magic Elemental' and other.spell_immunity == 5:
+        if self.name == 'Magic Elemental' and other.spell_immunity == 5:
             dmg_reductions.append(.5)
-        elif self.name == u'Psychic Elemental' and (
+        elif self.name == 'Psychic Elemental' and (
                 other.is_nonliving() or other.name in
-                [u'Giant', u'Titan', u'Black Dragon']):
+                ['Giant', 'Titan', 'Black Dragon']):
             dmg_reductions.append(.5)
 
         damage = base_dmg * (1. + dmg_bonus)
@@ -210,51 +216,77 @@ class Stack(object):
         damage = int(damage)
         other.take_dmg(damage)
 
-        if (self.name == u'Vampire Lord' and
+        other.petrified = 0
+        other.blinded = 0
+        other.paralyzed = 0
+        other.stunned_from_retaliation = False
+
+        if (self.name == 'Vampire Lord' and
                 not other.is_nonliving()):
             self.drain_life(damage)
-        elif (self.name == u'Mighty Gorgon' and
+        elif (self.name == 'Mighty Gorgon' and
                 not other.is_nonliving()):
             self.death_stare(other)
-        elif (self.name == u'Thunderbird' and
-              other.name not in [u'Earth Elemental', u'Magma Elemental'] and
+        elif (self.name == 'Thunderbird' and
+              other.name not in ['Earth Elemental', 'Magma Elemental'] and
               random() < .2 and
               other.spell_immunity < 2 and
               random() > other.magic_resist):
             self.thunderbolt(other)
-        elif self.name == u'Rust Dragon':
+        elif self.name == 'Rust Dragon':
             self.acid_breath(other)
-        elif (self.name == u'Ghost Dragon' and
+        elif (self.name == 'Ghost Dragon' and
               not other.is_nonliving() and
               random() < .2):
             other.start_aging()
-        elif (self.name == u'Wyvern Monarch' and
+        elif (self.name == 'Wyvern Monarch' and
                 not other.is_nonliving() and
                 random() < .2 and
                 other.times_poisoned < 5):
             other.start_poison()
-        elif (self.name in [u'Black Knight', u'Dread Knight', u'Mummy'] and
+        elif (self.name in ['Black Knight', 'Dread Knight', 'Mummy'] and
               not other.is_undead() and
               other.spell_immunity < 1 and
               random() > other.magic_resist and
               other.name not in [
-                  u'Efreet', u'Efreet Sultan', u'Fire Elemental',
-                  u'Energy Elemental', u'Firebird', u'Phoenix']):
-            if ((self.name == u'Mummy' and random() < .5) or
-                    (self.name != u'Mummy' and random() < .2)):
+                  'Efreet', 'Efreet Sultan', 'Fire Elemental',
+                  'Energy Elemental', 'Firebird', 'Phoenix']):
+            if ((self.name == 'Mummy' and random() < .5) or
+                    (self.name != 'Mummy' and random() < .2)):
                 self.start_curse(other)
-        elif (self.name == u'Dragon Fly' and
+        elif (self.name == 'Dragon Fly' and
               other.spell_immunity < 2 and
               random() > other.magic_resist):
             self.start_weakness(other)
-        elif (self.name == u'Zombie' and
+        elif (self.name == 'Zombie' and
               not other.is_nonliving()):
             self.start_disease(other)
+        elif (self.name in ['Medusa', 'Medusa Queen', 'Basilisk',
+                            'Greater Basilisk'] and
+              other.spell_immunity == 0 and
+              other.name not in ['Troglodyte', 'Infernal Troglodyte'] and
+              random() < .2):
+            self.start_petrification(other)
+            other.stunned_from_retaliation = retaliation
+        elif (self.name in ['Unicorn', 'War Unicorn'] and
+              other.spell_immunity < 2 and
+              not other.is_nonliving() and
+              other.name not in ['Troglodyte', 'Infernal Troglodyte',
+                                 'Giant', 'Titan'] and
+              random() < .2):
+            self.start_blind(other)
+            other.stunned_from_retaliation = retaliation
+        elif (self.name == 'Scorpicore' and
+              other.name not in ['Gold Dragon', 'Black Dragon',
+                                 'Magic Elemental'] and
+              random() < .2):
+            self.start_paralyze(other)
+            other.stunned_from_retaliation = retaliation
 
-        if (other.name == u'Efreet Sultan' and
+        if (other.name == 'Efreet Sultan' and
             self.name not in [
-                u'Efreet', u'Efreet Sultan', u'Fire Elemental',
-                u'Energy Elemental', u'Firebird', u'Phoenix']):
+                'Efreet', 'Efreet Sultan', 'Fire Elemental',
+                'Energy Elemental', 'Firebird', 'Phoenix']):
             self.efreet_fire_shield(fire_shield_damage)
 
     def attack_range(self, other, dmg_bonus=0., range_penalty=False):
@@ -271,7 +303,7 @@ class Stack(object):
         self.shots -= 1
 
     def start_weakness(self, other):
-        assert self.name == u'Dragon Fly'
+        assert self.name == 'Dragon Fly'
         if self.speed > other.speed:
             other.weakened = 3
         elif self.speed < other.speed:
@@ -287,7 +319,7 @@ class Stack(object):
             self.attack = self.true_attack
 
     def start_curse(self, other):
-        assert self.name in [u'Mummy', u'Black Knight', u'Dread Knight']
+        assert self.name in ['Mummy', 'Black Knight', 'Dread Knight']
         if self.speed > other.speed:
             other.cursed = 3
         elif self.speed < other.speed:
@@ -300,7 +332,7 @@ class Stack(object):
         self.cursed -= 1
 
     def start_disease(self, other):
-        assert self.name == u'Zombie'
+        assert self.name == 'Zombie'
         if self.speed > other.speed:
             other.diseased = 3
         elif self.speed < other.speed:
@@ -316,6 +348,46 @@ class Stack(object):
         if self.diseased == 0:
             self.attack = self.true_attack
             self.defense = self.true_defense
+
+    def start_petrification(self, other):
+        assert self.name in ['Medusa', 'Medusa Queen', 'Basilisk',
+                             'Greater Basilisk']
+        if self.speed > other.speed:
+            other.petrified = 3
+        elif self.speed < other.speed:
+            other.petrified = 2
+        else:
+            other.petrified = randint(2, 3)
+
+    def petrification(self):
+        assert self.petrified > 0
+        self.petrified -= 1
+
+    def start_blind(self, other):
+        assert self.name in ['Unicorn', 'War Unicorn']
+        if self.speed > other.speed:
+            other.blinded = 3
+        elif self.speed < other.speed:
+            other.blinded = 2
+        else:
+            other.blinded = randint(2, 3)
+
+    def blind(self):
+        assert self.blinded > 0
+        self.blinded -= 1
+
+    def start_paralyze(self, other):
+        assert self.name == 'Scorpicore'
+        if self.speed > other.speed:
+            other.paralyzed = 3
+        elif self.speed < other.speed:
+            other.paralyzed = 2
+        else:
+            other.paralyzed = randint(2, 3)
+
+    def paralyze(self):
+        assert self.paralyzed > 0
+        self.paralyzed -= 1
 
     def start_aging(self):
         was_already_aged = self.aged > 0
@@ -359,7 +431,7 @@ class Stack(object):
             self.hp_left = max(1, self.hp - hp_missing)
 
     def drain_life(self, damage_dealt):
-        assert self.name == u'Vampire Lord'
+        assert self.name == 'Vampire Lord'
         if self.hp_left + damage_dealt <= self.hp:
             self.hp_left += damage_dealt
         else:
@@ -377,38 +449,38 @@ class Stack(object):
             other.take_dmg(25 * self.count)
 
     def magic_dmg_resistance(self):
-        if self.name == u'Stone Golem':
+        if self.name == 'Stone Golem':
             return .5
-        elif self.name == u'Iron Golem':
+        elif self.name == 'Iron Golem':
             return .75
-        elif self.name == u'Gold Golem':
+        elif self.name == 'Gold Golem':
             return .85
-        elif self.name == u'Diamond Golem':
+        elif self.name == 'Diamond Golem':
             return .95
         return 0.
 
     def efreet_fire_shield(self, damage):
         damage *= (1. - self.magic_dmg_resistance())
-        if self.name in [u'Water Elemental', u'Ice Elemental']:
+        if self.name in ['Water Elemental', 'Ice Elemental']:
             damage *= 2
         self.take_dmg(int(damage))
 
     def thunderbolt(self, other):
-        assert self.name == u'Thunderbird'
+        assert self.name == 'Thunderbird'
         damage = 10 * self.count
         damage *= (1 - other.magic_dmg_resistance())
-        if self.name in [u'Air Elemental', u'Storm Elemental']:
+        if self.name in ['Air Elemental', 'Storm Elemental']:
             damage *= 2
         other.take_dmg(int(damage))
 
     def death_stare(self, other):
-        assert self.name == u'Mighty Gorgon' and not other.is_nonliving()
+        assert self.name == 'Mighty Gorgon' and not other.is_nonliving()
         to_death_stare = min(binomial(n=self.count, p=.1),
                              (self.count + 9) / 10)
         other.count = max(0, other.count - to_death_stare)
 
     def rebirth(self):
-        assert (self.name == u'Phoenix' and not self.is_alive() and
+        assert (self.name == 'Phoenix' and not self.is_alive() and
                 self.rebirth_available)
         certain, rem = divmod(self.count, 5)
         to_rebirth = certain + (random() < .2*rem)
@@ -416,7 +488,7 @@ class Stack(object):
         self.rebirth_available = False
 
     def regenerate(self):
-        assert self.name in [u'Wight', u'Wraith', u'Troll']
+        assert self.name in ['Wight', 'Wraith', 'Troll']
         self.hp_left = self.hp
 
     def is_alive(self):
@@ -455,3 +527,24 @@ class Stack(object):
 
     def is_nonliving(self):
         return self.is_elemental() or self.is_undead() or self.is_golem()
+
+    def is_stunned(self):
+        return bool(self.petrified or self.blinded or self.paralyzed)
+
+    def advance_statuses(self):
+        if self.aged > 0 and self.is_alive():
+            self.age()
+        elif self.poisoned >= 0 and self.is_alive():
+            self.poison()
+        elif self.cursed:
+            self.curse()
+        elif self.weakened:
+            self.weakness()
+        elif self.diseased:
+            self.disease()
+        elif self.petrified:
+            self.petrification()
+        elif self.blinded:
+            self.blind()
+        elif self.paralyzed:
+            self.paralyze()
