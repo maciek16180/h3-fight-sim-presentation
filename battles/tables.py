@@ -45,7 +45,8 @@ class FightsTable(Table):
             attrs=col_style(), verbose_name='Gold cost')
         self.base_columns['tot_growth'] = Column(
             attrs=col_style(), verbose_name='Total growth')
-        self.base_columns['value'] = Column(attrs=col_style())
+        self.base_columns['value'] = Column(
+            attrs=col_style(), order_by='-value', verbose_name='Value')
         self.base_columns['value'].attrs['td'][
             'style'] += "border-right: solid 1px #e2e2e2;"
         self.base_columns['value'].attrs['th'][

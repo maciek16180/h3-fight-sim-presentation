@@ -39,6 +39,7 @@ class IndexView(View):
             column_filter_request['col_town'] = 2
             filter_request['row_town'] = 1
             row_filter_request['row_town'] = 1
+            request.GET = filter_request
 
         filter_form = UnitFilterDouble(filter_request, Unit.objects.all())
         filter_form.form.fields['checkbox_growth'] = forms.ChoiceField(
