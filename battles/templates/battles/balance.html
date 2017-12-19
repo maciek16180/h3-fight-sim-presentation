@@ -1,4 +1,4 @@
-{% include 'battles/links.html' %}
+{% include 'main/links.html' %}
 
 {% load static %}
     <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
@@ -6,8 +6,7 @@
 
 {% block content %}
 
-    <hr/>
-        {% crispy form form.helper %}
+    {% crispy form form.helper %}
 
     <h1 style="margin-left: 1em">
         {{ res }}

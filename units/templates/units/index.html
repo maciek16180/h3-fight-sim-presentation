@@ -1,4 +1,4 @@
-{% include 'battles/links.html' %}
+{% include 'main/links.html' %}
 
 {% load static %}
     <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
@@ -10,8 +10,6 @@
 </style>
 
 {% block content %}
-
-    <hr/>
 
     {% crispy filter.form filter.form.helper %}
 

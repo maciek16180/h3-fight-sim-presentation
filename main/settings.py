@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'units.apps.UnitsConfig',
     'battles.apps.BattlesConfig',
+    'main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'h3-fight-sim-presentation.urls'
+ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'h3-fight-sim-presentation.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 
 # Database

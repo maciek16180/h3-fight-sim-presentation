@@ -1,7 +1,7 @@
 from units.models import Unit, Town
 import pandas as pd
 
-data = pd.read_csv('CRTRAITS.TXT', sep=',', encoding='utf-8')
+data = pd.read_csv('h3_fight_sim/CRTRAITS.TXT', sep=',', encoding='utf-8')
 data.Attributes.values[data.Attributes.values == u'0'] = ''
 
 crap = ['Plural', 'Wood', 'Mercury', 'Ore', 'Sulfur', 'Crystal', 'Gems',

@@ -12,8 +12,8 @@ from units.filters import UnitFilterDouble
 from units.forms import UnitFilterDoubleFormHelper
 from units.models import Unit
 
-from unit import make_unit, Stack
-from combat import fight, find_balance
+from h3_fight_sim.unit import make_unit, Stack
+from h3_fight_sim.combat import fight, find_balance
 
 
 def index(request):
@@ -106,8 +106,6 @@ def index(request):
     RequestConfig(request, paginate={'per_page': 28}).configure(table)
 
     export_format = request.GET.get('_export', None)
-    print("""""""s")
-    print(export_format)
     if export_format == 'Export':
         export_format = 'csv'
     if TableExport.is_valid_format(export_format):

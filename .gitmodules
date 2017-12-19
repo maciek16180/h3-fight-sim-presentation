@@ -1,0 +1,3 @@
+[submodule "h3_fight_sim"]
+	path = h3_fight_sim
+	url = https://github.com/maciek16180/h3-fight-sim

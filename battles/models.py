@@ -10,7 +10,7 @@ class Fights(models.Model):
     def __str__(self):
         return self.unit.name
 
-data = pd.read_csv('CRTRAITS.TXT', sep=',', encoding='utf-8')
+data = pd.read_csv('h3_fight_sim/CRTRAITS.TXT', sep=',', encoding='utf-8')
 
 for monster_id in range(141):
     Fights.add_to_class(

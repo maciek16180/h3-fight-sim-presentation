@@ -1,7 +1,7 @@
 from battles.models import Fights
 import pandas as pd
 
-data = pd.read_csv('scores.csv', sep=',', encoding='utf-8')
+data = pd.read_csv('h3_fight_sim/scores/scores.csv', sep=',', encoding='utf-8')
 columns = data.columns.tolist()[2:]
 
 for column_idx in range(141):
