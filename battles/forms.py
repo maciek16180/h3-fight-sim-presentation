@@ -29,6 +29,7 @@ class FightForm(forms.Form):
     helper.form_method = 'GET'
     helper.form_class = 'form-horizontal'
     helper.field_template = 'bootstrap3/layout/inline_field.html'
+
     helper.layout = Div(
         HTML('<h2>Combat simulator</h2>'),
         Div(
@@ -73,6 +74,7 @@ class BalanceForm(forms.Form):
     helper.form_method = 'GET'
     helper.form_class = 'form-horizontal'
     helper.field_template = 'bootstrap3/layout/inline_field.html'
+
     helper.layout = Div(
         HTML('<h2>Find balance</h2>'),
         Div(

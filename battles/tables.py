@@ -7,16 +7,18 @@ from types import MethodType
 from math import log
 
 
-col_style = lambda: {
-    'td': {"style": "text-align:center;"},
-    'th': {"style": "text-align:center;"}
-}
+def col_style():
+    return {'td': {"style": "text-align:center;"},
+            'th': {"style": "text-align:center;"}}
+
+
 def sign(x):
-    if x>0:
+    if x > 0:
         return 1
-    elif x<0:
+    elif x < 0:
         return -1
     return 0
+
 
 def color4cell(x):
     color_fn = lambda y: sign(log(y)) * abs(log(y))**.5

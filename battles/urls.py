@@ -1,9 +1,9 @@
 from django.conf.urls import url
 
-from . import views
+from .views import CombatView, BalanceView, IndexView
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^combat/$', views.combat, name='combat'),
-    url(r'^balance/$', views.balance, name='balance'),
+    url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^combat/$', CombatView.as_view(), name='combat'),
+    url(r'^balance/$', BalanceView.as_view(), name='balance'),
 ]
