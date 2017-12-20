@@ -45,6 +45,7 @@ class FightsTable(Table):
             attrs=col_style(), verbose_name='Gold cost')
         self.base_columns['tot_growth'] = Column(
             attrs=col_style(), verbose_name='Total growth')
+
         self.base_columns['value'] = Column(
             attrs=col_style(), order_by='-value', verbose_name='Value')
         self.base_columns['value'].attrs['td'][
@@ -75,6 +76,12 @@ class FightsTable(Table):
 
         def value_foo(_, value, record):
             return value
+
+        def render_value(_, value, record):
+            return mark_safe('<b>%i</b>' % value)
+
+        self.base_columns['value'].render = MethodType(
+            render_value, self.base_columns['value'])
 
         for vs_field in Fights._meta.fields[2:]:
             self.base_columns[vs_field.name] = Column(
