@@ -1,4 +1,4 @@
-from .settings import *
+from .devel import *
 
 DEBUG = False
 

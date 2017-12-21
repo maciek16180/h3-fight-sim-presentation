@@ -1,6 +1,7 @@
 from django import forms
 from django.shortcuts import render
 from django.views.generic import View
+from django.views.decorators.cache import cache_control
 
 from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
@@ -16,11 +17,28 @@ from units.models import Unit
 from h3_fight_sim.unit import make_unit, Stack
 from h3_fight_sim.combat import fight, find_balance
 
+from time import time
+
+
+fights_data = Fights.objects.all()
+unit_names = list(Unit.objects.order_by('id').values_list('name', flat=True))
+
+all_pikeman_fights = [getattr(fights_data.get(pk=1), 'vs' + str(u.pk))
+                      for u in Unit.objects.order_by('id')]
+
+growths = [x.growth + x.horde_growth for x in Unit.objects.order_by('id')]
+costs = [x.gold_cost for x in Unit.objects.order_by('id')]
+
 
 class IndexView(View):
     template_name = 'battles/index.html'
 
+    def __init__(self, *args, **kwargs):
+        super(IndexView, self).__init__(*args, **kwargs)
+
     def get(self, request):
+        t0 = time()
+
         column_filter_request = request.GET.copy()
         for (k, v) in list(column_filter_request.items()):
             if k[:4] == 'row_':
@@ -59,35 +77,35 @@ class IndexView(View):
         col_units = column_filter.qs
         col_units_pks = [x.pk for x in col_units]
 
-        data = Fights.objects.all()
+        fights_data = Fights.objects.all()
 
         row_filter = UnitFilterDouble(row_filter_request, Unit.objects.all())
         row_units = set([x.pk for x in row_filter.qs])
 
-        growths = [x.growth + x.horde_growth for x in Unit.objects.all()]
-
-        costs = [x.gold_cost for x in Unit.objects.all()]
-
-        pikeman_fights = [getattr(data.get(pk=1), 'vs' + str(i))
-                          for i in col_units_pks]
+        pikeman_fights = [all_pikeman_fights[pk-1] for pk in col_units_pks]
 
         if request.GET.get('checkbox_growth', None) == 'on':
-            for i in range(len(pikeman_fights)):
-                pikeman_fights[i] = pikeman_fights[i] / \
-                    growths[0] * growths[col_units_pks[i]-1]
+            pikeman_fights = [
+                pikeman_fights[i] / growths[0] * growths[col_units_pks[i]-1]
+                for i in range(len(pikeman_fights))]
+
         if request.GET.get('checkbox_gold_cost', None) == 'on':
-            for i in range(len(pikeman_fights)):
-                pikeman_fights[i] = pikeman_fights[i] * \
-                    costs[0] / costs[col_units_pks[i]-1]
+            pikeman_fights = [
+                pikeman_fights[i] / costs[0] / costs[col_units_pks[i]-1]
+                for i in range(len(pikeman_fights))]
+
         base_value = sum(1 / x for x in pikeman_fights)
 
         table_data = []
-        for x in data:
+
+        for x in fights_data:
             if x.pk in row_units:
-                x_dict = {'id': x.id, 'unit': x.unit, 'value': None}
+                x_dict = {'id': x.id, 'unit': unit_names[x.pk-1], 'value': None}
                 for i in range(1, 142):
+                    pass
                     attr_name = 'vs' + str(i)
                     x_dict[attr_name] = getattr(x, attr_name)
+
                     if request.GET.get('checkbox_growth', None) == 'on':
                         x_dict[attr_name] = x_dict[attr_name] / \
                             growths[x.pk-1] * growths[i-1]
@@ -106,6 +124,7 @@ class IndexView(View):
                 table_data.append(x_dict)
 
         table = FightsTable(data=table_data)
+
         table.exclude = ['vs' + str(x)
                          for x in range(1, 142) if x not in col_units_pks]
 
@@ -118,8 +137,13 @@ class IndexView(View):
             exporter = TableExport(export_format, table)
             return exporter.response('battles.{}'.format(export_format))
 
-        return render(request, self.template_name,
-                      {'table': table, 'form': filter_form.form})
+        print(time() - t0)
+        t0 = time()
+
+        result = render(request, self.template_name,
+                        {'table': table, 'form': filter_form.form})
+        print(time() - t0)
+        return result
 
 
 class CombatView(View):

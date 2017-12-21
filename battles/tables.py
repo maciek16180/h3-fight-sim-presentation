@@ -55,7 +55,7 @@ class FightsTable(Table):
 
         def new_render(field_name):
             def fn(self, value, record):
-                pk1 = record['unit'].id
+                pk1 = record['id']
                 pk2 = int(field_name[2:])
                 count1 = 10000
                 count2 = int(count1 / record[field_name])
@@ -68,14 +68,15 @@ class FightsTable(Table):
                     self.attrs['td']['style'] = self.attrs['td']['style'][:idx]
                 self.attrs['td']['style'] += color
 
+                # print(mark_safe(
+                #     '<a title=\'Try it!\' href=\'combat/?unit1=%s&unit2=%s&'
+                #     'count1=%s&count2=%s&num_fights=1000\'>%.3f</a>'
+                #     % (pk1, pk2, count1, count2, value,)).s)
                 return mark_safe(
                     '<a title=\'Try it!\' href=\'combat/?unit1=%s&unit2=%s&'
                     'count1=%s&count2=%s&num_fights=1000\'>%.3f</a>'
                     % (pk1, pk2, count1, count2, value,))
             return fn
-
-        def value_foo(_, value, record):
-            return value
 
         def render_value(_, value, record):
             return mark_safe('<b>%i</b>' % value)
@@ -88,6 +89,5 @@ class FightsTable(Table):
                 vs_field.verbose_name, attrs=col_style())
             col = self.base_columns[vs_field.name]
             col.render = MethodType(new_render(vs_field.name), col)
-            col.value = MethodType(value_foo, col)
 
         super(FightsTable, self).__init__(*args, **kwargs)
