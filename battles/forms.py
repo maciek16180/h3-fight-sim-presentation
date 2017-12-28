@@ -10,8 +10,8 @@ class FightForm(forms.Form):
     unit1 = forms.ModelChoiceField(Unit.objects.all(), label='Unit A')
     unit2 = forms.ModelChoiceField(Unit.objects.all(), label='Unit B')
 
-    count1 = forms.IntegerField(label='A Count', min_value=1)
-    count2 = forms.IntegerField(label='B Count', min_value=1)
+    count1 = forms.IntegerField(label='A Count', min_value=1, max_value=100000)
+    count2 = forms.IntegerField(label='B Count', min_value=1, max_value=100000)
 
     num_fights = forms.IntegerField(
         label='Number of fights', min_value=1, initial=100, max_value=1000)
@@ -55,8 +55,10 @@ class BalanceForm(forms.Form):
     unit1 = forms.ModelChoiceField(Unit.objects.all(), label='Unit A')
     unit2 = forms.ModelChoiceField(Unit.objects.all(), label='Unit B')
 
-    count1 = forms.IntegerField(label='A Count', min_value=1, required=False)
-    count2 = forms.IntegerField(label='B Count', min_value=1, required=False)
+    count1 = forms.IntegerField(label='A Count', min_value=1, max_value=100000,
+                                required=False)
+    count2 = forms.IntegerField(label='B Count', min_value=1, max_value=100000,
+                                required=False)
 
     num_fights = forms.IntegerField(
         label='Number of fights', min_value=1, initial=500, max_value=1000)
