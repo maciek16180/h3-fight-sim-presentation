@@ -2,8 +2,8 @@ from django.db import models
 from units.models import Unit
 from .unit_names import names
 
-class Fights(models.Model):
 
+class Fights(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 
     def __str__(self):
