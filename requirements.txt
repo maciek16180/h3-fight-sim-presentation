@@ -2,6 +2,6 @@ Django (2.0)
 django-bootstrap3 (9.1.0)
 django-crispy-forms (1.7.0)
 django-filter (1.1.0)
-django-tables2 (1.16.0)
+django-tables2 (1.17.1)
 tablib (0.12.1)
-
+Transcrypt (3.6.67)
