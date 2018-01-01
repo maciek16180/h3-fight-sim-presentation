@@ -8,9 +8,18 @@
 
     {% crispy form form.helper %}
 
-    <h1 style="margin-left: 1em">
-        {{ res1 }} <br>
-        {{ res2 }}
-    </h1>
+    <h1 style="margin-left: 1em" id="result"></h1>
+
+    <script src="{% static "battles/__javascript__/fight_sim.js" %}"></script>
+    <script type="text/javascript">
+        if ("{{valid}}" == 'True') {
+            var res = fight_sim.fight(
+                "{{unit1}}", parseInt("{{count1}}"),
+                "{{unit2}}", parseInt("{{count2}}"),
+                parseInt("{{num_fights}}"));
+            document.getElementById('result').innerHTML =
+                res[0] + "<br>" + res[1];
+        }
+    </script>
 
 {% endblock content %}

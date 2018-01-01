@@ -14,9 +14,6 @@ from units.filters import UnitFilterDouble
 from units.forms import UnitFilterDoubleFormHelper
 from units.models import Unit
 
-from h3_fight_sim.unit import make_unit, Stack
-from h3_fight_sim.combat import fight, find_balance
-
 from time import time
 
 
@@ -100,7 +97,8 @@ class IndexView(View):
 
         for x in fights_data:
             if x.pk in row_units:
-                x_dict = {'id': x.id, 'unit': unit_names[x.pk-1], 'value': None}
+                x_dict = {'id': x.id, 'unit': unit_names[
+                    x.pk-1], 'value': None}
                 for i in range(1, 142):
                     pass
                     attr_name = 'vs' + str(i)
@@ -150,51 +148,45 @@ class CombatView(View):
     template_name = "battles/combat.html"
 
     def get(self, request):
-        res1 = ''
-        res2 = ''
+        valid = False
 
         if request.GET:
             form = FightForm(request.GET)
-
-            if form.is_valid():
-                data = form.cleaned_data
-                A = Stack(make_unit(data['unit1'].name), data['count1'])
-                B = Stack(make_unit(data['unit2'].name), data['count2'])
-                result = fight(A, B, data['num_fights'])
-                res1 = A.name + ': %i' % result[A.name][0]
-                res2 = B.name + ': %i' % result[B.name][0]
-
+            valid = form.is_valid()
         else:
             form = FightForm()
 
-        return render(request, self.template_name,
-                      {'form': form, 'res1': res1, 'res2': res2})
+        env = {'form': form, 'valid': valid}
+
+        if valid:
+            data = form.cleaned_data
+            env.update({
+                'unit1': data['unit1'].name, 'count1': data['count1'],
+                'unit2': data['unit2'].name, 'count2': data['count2'],
+                'num_fights': data['num_fights']})
+
+        return render(request, self.template_name, env)
 
 
 class BalanceView(View):
     template_name = "battles/balance.html"
 
     def get(self, request):
-        res = ''
+        valid = False
 
         if request.GET:
             form = BalanceForm(request.GET)
-
-            if form.is_valid():
-                data = form.cleaned_data
-                countA, countB = data['count1'], data['count2']
-                nameA, nameB = data['unit1'].name, data['unit2'].name
-                count1 = countA or countB
-                idxA = 1 if countB else 0
-                idxB = (idxA + 1) % 2
-                name1 = nameA if count1 == countA else nameB
-                name2 = nameB if count1 == countA else nameA
-                result = find_balance(
-                    name1, name2, data['num_fights'], startA=count1)
-                res = u'{:g} {} \u2248 {:g} {}'.format(
-                    round(result[idxA], 3), nameA,
-                    round(result[idxB], 3), nameB)
+            valid = form.is_valid()
         else:
             form = BalanceForm()
 
-        return render(request, self.template_name, {'form': form, 'res': res})
+        env = {'form': form, 'valid': valid}
+
+        if valid:
+            data = form.cleaned_data
+            env.update({
+                'unit1': data['unit1'].name, 'count1': data['count1'],
+                'unit2': data['unit2'].name, 'count2': data['count2'],
+                'num_fights': data['num_fights']})
+
+        return render(request, self.template_name, env)

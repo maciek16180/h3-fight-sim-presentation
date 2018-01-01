@@ -1,0 +1,11 @@
+{
+	"version": 3,
+	"file": "h3_fight_sim/__javascript__/fight_sim.mod.js",
+	"sources": [
+		"h3_fight_sim/fight_sim.py"
+	],
+	"sourcesContent": [
+		"from unit import make_unit, Stack\nfrom combat import fight as fight_orig\nfrom combat import find_balance as find_balance_orig\n\n\ndef fight(nameA, countA, nameB, countB, num_fights):\n    A = Stack(make_unit(nameA), countA)\n    B = Stack(make_unit(nameB), countB)\n    result = fight_orig(A, B, num_fights)\n    resA = A.name + \": {}\".format(result[A.name][0])\n    resB = B.name + \": {}\".format(result[B.name][0])\n    return resA, resB\n\n\ndef find_balance(nameA, countA, nameB, countB, num_fights):\n    count1 = countA or countB\n    idxA = 1 if countB else 0\n    idxB = (idxA + 1) % 2\n    name1 = nameA if count1 == countA else nameB\n    name2 = nameB if count1 == countA else nameA\n    result = find_balance_orig(name1, name2, num_fights, count1)\n    res = u\"{} {} \\u2248 {} {}\".format(\n        result[idxA], nameA,\n        result[idxB], nameB)\n    return res\n"
+	],
+	"mappings": "AAAA;AAAA;AAAA;AAAA;AACA;AACA;AAGA;AACA;AACA;AACA;AACA;AACA;AACA;AAAA;AAGA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AAGA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA"
+}
