@@ -163,7 +163,9 @@ class CombatView(View):
             env.update({
                 'unit1': data['unit1'].name, 'count1': data['count1'],
                 'unit2': data['unit2'].name, 'count2': data['count2'],
-                'num_fights': data['num_fights']})
+                'num_fights': data['num_fights'],
+                'plural1': Unit.objects.get(name=data['unit1'].name).plural,
+                'plural2': Unit.objects.get(name=data['unit2'].name).plural})
 
         return render(request, self.template_name, env)
 
@@ -187,6 +189,8 @@ class BalanceView(View):
             env.update({
                 'unit1': data['unit1'].name, 'count1': data['count1'],
                 'unit2': data['unit2'].name, 'count2': data['count2'],
-                'num_fights': data['num_fights']})
+                'num_fights': data['num_fights'],
+                'plural1': Unit.objects.get(name=data['unit1'].name).plural,
+                'plural2': Unit.objects.get(name=data['unit2'].name).plural})
 
         return render(request, self.template_name, env)

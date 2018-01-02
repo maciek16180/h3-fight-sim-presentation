@@ -12,6 +12,7 @@ class Town(models.Model):
 class Unit(models.Model):
 
     name = models.CharField(max_length=30)
+    plural = models.CharField(max_length=35)
     gold_cost = models.IntegerField(verbose_name='Gold')
     fight_value = models.IntegerField()
     ai_value = models.IntegerField(verbose_name='AI Value')

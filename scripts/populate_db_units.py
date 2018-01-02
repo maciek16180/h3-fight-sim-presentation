@@ -4,7 +4,7 @@ import pandas as pd
 data = pd.read_csv('h3_fight_sim/CRTRAITS.TXT', sep=',', encoding='utf-8')
 data.Attributes.values[data.Attributes.values == u'0'] = ''
 
-crap = ['Plural', 'Wood', 'Mercury', 'Ore', 'Sulfur', 'Crystal', 'Gems',
+crap = ['Wood', 'Mercury', 'Ore', 'Sulfur', 'Crystal', 'Gems',
         'Ability Text', 'GuardsLow', 'GuardsHigh']
 data.drop(crap, axis=1, inplace=True)
 
@@ -18,9 +18,9 @@ for name in [u'Castle', u'Rampart', u'Tower', u'Inferno', u'Necropolis',
 for uid, row in enumerate(data.values[:-5]):
     uid = uid + 1
     u = Unit()
-    (u.name, u.gold_cost, u.fight_value, u.ai_value, u.growth, u.horde_growth,
-     u.hp, u.speed, u.attack, u.defense, u.min_dmg, u.max_dmg, u.shots,
-     u.spells) = row[:-1]
+    (u.name, u.plural, u.gold_cost, u.fight_value, u.ai_value, u.growth,
+     u.horde_growth, u.hp, u.speed, u.attack, u.defense, u.min_dmg, u.max_dmg,
+     u.shots, u.spells) = row[:-1]
 
     attributes = set(row[-1].split(' | '))
 

@@ -8,9 +8,7 @@
 			var A = Stack (make_unit (nameA), countA);
 			var B = Stack (make_unit (nameB), countB);
 			var result = fight_orig (A, B, num_fights);
-			var resA = A.py_name + ': {}'.format (result [A.py_name] [0]);
-			var resB = B.py_name + ': {}'.format (result [B.py_name] [0]);
-			return tuple ([resA, resB]);
+			return tuple ([result [A.py_name] [0], result [B.py_name] [0]]);
 		};
 		var find_balance = function (nameA, countA, nameB, countB, num_fights) {
 			var count1 = countA || countB;
@@ -19,8 +17,7 @@
 			var name1 = (count1 == countA ? nameA : nameB);
 			var name2 = (count1 == countA ? nameB : nameA);
 			var result = find_balance_orig (name1, name2, num_fights, count1);
-			var res = '{} {} ≈ {} {}'.format (result [idxA], nameA, result [idxB], nameB);
-			return res;
+			return tuple ([result [idxA], result [idxB], idxA == 0]);
 		};
 		__pragma__ ('<use>' +
 			'combat' +

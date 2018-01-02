@@ -17,7 +17,13 @@
                 "{{unit1}}", parseInt("{{count1}}"),
                 "{{unit2}}", parseInt("{{count2}}"),
                 parseInt("{{num_fights}}"));
-            document.getElementById('result').innerHTML = res;
+            if (res[2] == 'True')
+                var text =
+                    res[0] + " {{plural1}} \u2248 " + res[1] + " {{plural2}}";
+            else
+                var text =
+                    res[0] + " {{plural2}} \u2248 " + res[1] + " {{plural1}}";
+            document.getElementById('result').innerHTML = text;
         }
     </script>
 

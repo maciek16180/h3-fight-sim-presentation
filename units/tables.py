@@ -16,7 +16,7 @@ class UnitTable(Table):
 
     class Meta:
         model = Unit
-        exclude = []
+        exclude = ['plural']
         attrs = {'class': 'paleblue'}
 
     def __init__(self, *args, **kwargs):
