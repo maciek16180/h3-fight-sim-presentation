@@ -1,5 +1,5 @@
 "use strict";
-// Transcrypt'ed from Python, 2018-01-02 18:32:58
+// Transcrypt'ed from Python, 2018-01-03 15:18:19
 function fight_sim () {
     var __symbols__ = ['__py3.6__', '__esv5__'];
     var __all__ = {};
@@ -2331,9 +2331,11 @@ function fight_sim () {
 						var unitB = make_unit (nameB);
 						var startA = startA || unitB.ai_value * 10;
 						var startB = int ((float (startA) / unitB.ai_value) * unitA.ai_value);
+						print (startA, startB);
 						var A = Stack (unitA, startA);
 						var B = Stack (unitB, startB);
 						var res = fight (A, B, num_iter);
+						print (res);
 						if (balanced (res)) {
 							return tuple ([A.count, B.count]);
 						}
@@ -2342,10 +2344,12 @@ function fight_sim () {
 						var change = sign * max (int (B.count / 10.0), 1);
 						var enough = false;
 						while (!(enough)) {
+							print (B.count);
 							var x1 = B.count;
 							B.count += change;
 							B.cap += change;
 							var res = fight (A, B, num_iter);
+							print (res);
 							var B_won = res [A.py_name] [0] < res [B.py_name] [0];
 							var enough = B_won != B_won_last;
 							if (!(enough)) {
@@ -2358,11 +2362,14 @@ function fight_sim () {
 						var x2 = B.count;
 						var low = min (x1, x2);
 						var high = max (x1, x2);
+						print ('\n', low, high, '\n');
 						while (true) {
 							var middle = low + Math.floor ((high - low) / 2);
+							print (middle);
 							B.count = middle;
 							B.cap = middle;
 							var res = fight (A, B, num_iter);
+							print (res);
 							if (balanced (res) || abs (high - low) <= 1) {
 								return tuple ([A.count, max (B.count, 1)]);
 							}
@@ -3238,13 +3245,23 @@ function fight_sim () {
 			return tuple ([result [A.py_name] [0], result [B.py_name] [0]]);
 		};
 		var find_balance = function (nameA, countA, nameB, countB, num_fights) {
-			var count1 = countA || countB;
-			var idxA = (countB ? 1 : 0);
-			var idxB = __mod__ (idxA + 1, 2);
-			var name1 = (count1 == countA ? nameA : nameB);
-			var name2 = (count1 == countA ? nameB : nameA);
+			var swap = !(countA);
+			if (swap) {
+				var count1 = countB;
+				var __left0__ = tuple ([nameB, nameA]);
+				var name1 = __left0__ [0];
+				var name2 = __left0__ [1];
+				var idxA = 1;
+			}
+			else {
+				var count1 = countA;
+				var __left0__ = tuple ([nameA, nameB]);
+				var name1 = __left0__ [0];
+				var name2 = __left0__ [1];
+				var idxA = 0;
+			}
 			var result = find_balance_orig (name1, name2, num_fights, count1);
-			return tuple ([result [idxA], result [idxB], idxA == 0]);
+			return tuple ([result [idxA], result [__mod__ (idxA + 1, 2)], swap]);
 		};
 		__pragma__ ('<use>' +
 			'combat' +

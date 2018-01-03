@@ -17,11 +17,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from .views import IndexView
+from .views import IndexView, DocsView
 
 urlpatterns = [
     url(r'^battles/', include('battles.urls')),
     url(r'^units/', include('units.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^docs/', DocsView.as_view(), name='docs'),
     url(r'^', IndexView.as_view(), name='index'),
 ]

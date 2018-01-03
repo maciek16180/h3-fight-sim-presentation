@@ -19,10 +19,10 @@
                 parseInt("{{num_fights}}"));
             if (res[2] == 'True')
                 var text =
-                    res[0] + " {{plural1}} \u2248 " + res[1] + " {{plural2}}";
+                    res[0] + " {{plural2}} \u2248 " + res[1] + " {{plural1}}";
             else
                 var text =
-                    res[0] + " {{plural2}} \u2248 " + res[1] + " {{plural1}}";
+                    res[0] + " {{plural1}} \u2248 " + res[1] + " {{plural2}}";
             document.getElementById('result').innerHTML = text;
         }
     </script>

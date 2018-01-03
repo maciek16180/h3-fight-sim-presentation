@@ -95,6 +95,7 @@ class UnitFilterDoubleFormHelper(FormHelper):
             Div(
                 Field('checkbox_growth'),
                 Field('checkbox_gold_cost'),
+                Field('value_alt'),
                 style="float:left; margin-right: 2em;"
             ),
             ButtonHolder(
@@ -106,5 +107,5 @@ class UnitFilterDoubleFormHelper(FormHelper):
             ),
             style="margin-left: 5em;"
         ),
-        style="margin-left: 1em; margin-bottom: 1em;"
+        style="margin-left: 1em; margin-bottom: 2em;"
     )

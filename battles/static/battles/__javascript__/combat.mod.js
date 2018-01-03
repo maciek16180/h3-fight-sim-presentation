@@ -201,9 +201,11 @@
 						var unitB = make_unit (nameB);
 						var startA = startA || unitB.ai_value * 10;
 						var startB = int ((float (startA) / unitB.ai_value) * unitA.ai_value);
+						print (startA, startB);
 						var A = Stack (unitA, startA);
 						var B = Stack (unitB, startB);
 						var res = fight (A, B, num_iter);
+						print (res);
 						if (balanced (res)) {
 							return tuple ([A.count, B.count]);
 						}
@@ -212,10 +214,12 @@
 						var change = sign * max (int (B.count / 10.0), 1);
 						var enough = false;
 						while (!(enough)) {
+							print (B.count);
 							var x1 = B.count;
 							B.count += change;
 							B.cap += change;
 							var res = fight (A, B, num_iter);
+							print (res);
 							var B_won = res [A.py_name] [0] < res [B.py_name] [0];
 							var enough = B_won != B_won_last;
 							if (!(enough)) {
@@ -228,11 +232,14 @@
 						var x2 = B.count;
 						var low = min (x1, x2);
 						var high = max (x1, x2);
+						print ('\n', low, high, '\n');
 						while (true) {
 							var middle = low + Math.floor ((high - low) / 2);
+							print (middle);
 							B.count = middle;
 							B.cap = middle;
 							var res = fight (A, B, num_iter);
+							print (res);
 							if (balanced (res) || abs (high - low) <= 1) {
 								return tuple ([A.count, max (B.count, 1)]);
 							}

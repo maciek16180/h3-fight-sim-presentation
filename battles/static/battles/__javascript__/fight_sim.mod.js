@@ -11,13 +11,23 @@
 			return tuple ([result [A.py_name] [0], result [B.py_name] [0]]);
 		};
 		var find_balance = function (nameA, countA, nameB, countB, num_fights) {
-			var count1 = countA || countB;
-			var idxA = (countB ? 1 : 0);
-			var idxB = __mod__ (idxA + 1, 2);
-			var name1 = (count1 == countA ? nameA : nameB);
-			var name2 = (count1 == countA ? nameB : nameA);
+			var swap = !(countA);
+			if (swap) {
+				var count1 = countB;
+				var __left0__ = tuple ([nameB, nameA]);
+				var name1 = __left0__ [0];
+				var name2 = __left0__ [1];
+				var idxA = 1;
+			}
+			else {
+				var count1 = countA;
+				var __left0__ = tuple ([nameA, nameB]);
+				var name1 = __left0__ [0];
+				var name2 = __left0__ [1];
+				var idxA = 0;
+			}
 			var result = find_balance_orig (name1, name2, num_fights, count1);
-			return tuple ([result [idxA], result [idxB], idxA == 0]);
+			return tuple ([result [idxA], result [__mod__ (idxA + 1, 2)], swap]);
 		};
 		__pragma__ ('<use>' +
 			'combat' +

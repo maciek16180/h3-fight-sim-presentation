@@ -67,6 +67,11 @@ class IndexView(View):
             label='Consider cost?',
             required=False,
             choices=[(True, "Yes"), (False, "No")])
+        filter_form.form.fields['value_alt'] = forms.ChoiceField(
+            widget=forms.CheckboxInput,
+            label='Alt. value calculation',
+            required=False,
+            choices=[(True, "Yes"), (False, "No")])
         filter_form.form.helper = UnitFilterDoubleFormHelper()
 
         column_filter = UnitFilterDouble(
@@ -88,7 +93,7 @@ class IndexView(View):
 
         if request.GET.get('checkbox_gold_cost', None) == 'on':
             pikeman_fights = [
-                pikeman_fights[i] / costs[0] / costs[col_units_pks[i]-1]
+                pikeman_fights[i] * costs[0] / costs[col_units_pks[i]-1]
                 for i in range(len(pikeman_fights))]
 
         base_value = sum(1 / x for x in pikeman_fights)
@@ -100,7 +105,6 @@ class IndexView(View):
                 x_dict = {'id': x.id, 'unit': unit_names[
                     x.pk-1], 'value': None}
                 for i in range(1, 142):
-                    pass
                     attr_name = 'vs' + str(i)
                     x_dict[attr_name] = getattr(x, attr_name)
 
@@ -111,9 +115,15 @@ class IndexView(View):
                         x_dict[attr_name] = x_dict[attr_name] * \
                             costs[x.pk-1] / costs[i-1]
                 if col_units_pks:
-                    x_value = int(
-                        sum(1 / x_dict['vs' + str(i)]
-                            for i in col_units_pks) / base_value * 80)
+                    if request.GET.get('value_alt', None) == 'on':
+                        x_value = int(
+                            sum(pikeman_fights[j] / x_dict['vs' + str(i)]
+                                for j, i in enumerate(col_units_pks)
+                                ) / len(col_units_pks) * 80)
+                    else:
+                        x_value = int(
+                            sum(1 / x_dict['vs' + str(i)]
+                                for i in col_units_pks) / base_value * 80)
                 else:
                     x_value = 0
                 x_dict['value'] = x_value
