@@ -42,11 +42,10 @@ name_filter = lambda: django_filters.CharFilter(
     'name',
     lookup_expr='icontains',
     label='Name',
-    # initial="smok",
     widget=TextInput(attrs={'style': 'width: 15em;'}))
 
 upgraded_filter = lambda: django_filters.BooleanFilter(
-    'upgraded',
+    'b_upgraded',
     widget=bool_widget())
 
 town_filter = lambda: django_filters.ModelMultipleChoiceFilter(
@@ -67,7 +66,7 @@ class UnitFilter(FilterSet):
     name = name_filter()
     gold_cost = gold_cost_filter()
 
-    upgraded = upgraded_filter()
+    b_upgraded = upgraded_filter()
 
     town = town_filter()
 

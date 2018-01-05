@@ -68,10 +68,6 @@ class FightsTable(Table):
                     self.attrs['td']['style'] = self.attrs['td']['style'][:idx]
                 self.attrs['td']['style'] += color
 
-                # print(mark_safe(
-                #     '<a title=\'Try it!\' href=\'combat/?unit1=%s&unit2=%s&'
-                #     'count1=%s&count2=%s&num_fights=1000\'>%.3f</a>'
-                #     % (pk1, pk2, count1, count2, value,)).s)
                 return mark_safe(
                     '<a title=\'Try it!\' href=\'combat/?unit1=%s&unit2=%s&'
                     'count1=%s&count2=%s&num_fights=1000\'>%.3f</a>'

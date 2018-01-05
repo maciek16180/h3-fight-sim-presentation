@@ -31,7 +31,14 @@ class FightForm(forms.Form):
     helper.field_template = 'bootstrap3/layout/inline_field.html'
 
     helper.layout = Div(
-        HTML('<h2>Combat simulator</h2>'),
+        HTML('<h2>Combat simulator '
+             '[<a href=http://127.0.0.1:8000/docs/#Combat-simulation>docs</a>]'
+             '</h2>'),
+        Div(
+            HTML('Choose two stacks and find out which one proves stronger in '
+                 'a series of duels! The result will show the number of wins '
+                 'for each side.'),
+            style='margin-bottom: 0.5em; color: grey; width: 23em;'),
         Div(
             Div('unit1', style="float: left;"),
             CustomMyInlineField('count1'),
@@ -78,7 +85,15 @@ class BalanceForm(forms.Form):
     helper.field_template = 'bootstrap3/layout/inline_field.html'
 
     helper.layout = Div(
-        HTML('<h2>Find balance</h2>'),
+        HTML('<h2>Find balance '
+             '[<a href=http://127.0.0.1:8000/docs/#Estimation-method>docs</a>]'
+             '</h2>'),
+        Div(
+            HTML('Choose two creatures and get the stack sizes for which the '
+                 'outcome of a duel is the most unpredictable! You can leave '
+                 'the counts empty, or specify one of them. More fights and '
+                 'bigger stacks mean better accuracy.'),
+            style='margin-bottom: 0.5em; color: grey; width: 25em;'),
         Div(
             Div('unit1', style="float: left;"),
             CustomMyInlineField('count1'),

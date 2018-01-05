@@ -29,8 +29,8 @@ class Unit(models.Model):
 
     town = models.ForeignKey(Town, on_delete=models.CASCADE)
     level = models.PositiveSmallIntegerField(default=0)
-    upgraded = models.BooleanField(default=False, verbose_name='Upgraded?')
 
+    b_upgraded = models.BooleanField(default=False, verbose_name='Upgraded?')
     b_double_wide = models.BooleanField(default=False, verbose_name='Big?')
     b_free_attack = models.BooleanField(
         default=False, verbose_name='No retaliation?')

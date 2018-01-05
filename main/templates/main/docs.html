@@ -1,1 +1,22 @@
-{% include 'main/report.html' %}
+{% include 'main/links.html' %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "main/css/base.css" %}{% endblock %}" />
+
+<!-- LATEX -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--  -->
+
+<style type="text/css">
+    h1 { font-weight: bold; }
+    h1, h2, h3 { color: black; },
+</style>
+
+</br>
+<div style="margin-left: 1em">
+    {% include 'main/report.html' %}
+</div>

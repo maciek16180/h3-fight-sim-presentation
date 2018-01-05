@@ -21,6 +21,9 @@ class UnitFilterFormHelper(FormHelper):
         Fieldset(
             '<b>Filter units</b>',
             Div(
+                HTML('<i>Leave the filter empty to show all units.</i>'),
+                style='text-align: center; font-size: 0.9em;'),
+            Div(
                 MyInlineField('town'),
                 style="width: 12em; float:left;"
             ),
@@ -29,14 +32,15 @@ class UnitFilterFormHelper(FormHelper):
                     style="margin-bottom: 0.5em; margin-top: 0.5em;"),
                 Div(CustomMyInlineField('gold_cost'),
                     style="margin-bottom: 0.5em;"),
-                Div(MyInlineField('upgraded'),
+                Div(MyInlineField('b_upgraded'),
                     style="margin-bottom: 0.5em;"),
                 Div(MyInlineField('level'),
                     style="margin-bottom: 1.5em; margin-right: 1em;"),
                 ButtonHolder(
                     Submit('submit', 'Apply Filter'),
                     HTML("{% load querystring from django_tables2 %}\n"
-                         "<a style='margin-left:2em;' href={% querystring '_export'='csv' %}>"
+                         "<a style='margin-left:2em;' href={% querystring "
+                         "'_export'='csv' %}>"
                          "<input type='button' value='Export'></a>"),
                     style="margin-left: 16em;",
                 ),
@@ -58,6 +62,9 @@ class UnitFilterDoubleFormHelper(FormHelper):
         Fieldset(
             '<b>Units in rows</b>',
             Div(
+                HTML('<i>Leave the filter empty to show all units.</i>'),
+                style='text-align: center; font-size: 0.9em;'),
+            Div(
                 MyInlineField('row_town'),
                 style="width: 12em; float:left;"
             ),
@@ -75,6 +82,9 @@ class UnitFilterDoubleFormHelper(FormHelper):
         ),
         Fieldset(
             '<b>Units in columns</b>',
+            Div(
+                HTML('<i>Leave the filter empty to show all units.</i>'),
+                style='text-align: center; font-size: 0.9em;'),
             Div(
                 MyInlineField('col_town'),
                 style="width: 12em; float:left;"
@@ -101,7 +111,8 @@ class UnitFilterDoubleFormHelper(FormHelper):
             ButtonHolder(
                 Submit('submit', 'Apply Filter'),
                 HTML("{% load querystring from django_tables2 %}\n"
-                     "<a style='margin-left:2em;' href={% querystring '_export'='csv' %}>"
+                     "<a style='margin-left:2em;' href={% querystring "
+                     "'_export'='csv' %}>"
                      "<input type='button' value='Export'></a>"),
                 style="margin-left: 16em;",
             ),

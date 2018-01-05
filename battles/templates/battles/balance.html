@@ -1,14 +1,28 @@
 {% include 'main/links.html' %}
 
 {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "main/css/base.css" %}{% endblock %}" />
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "main/css/base.css" %}{% endblock %}" />
 {% load crispy_forms_tags %}
+
+<style type="text/css">
+    .alert-error {
+        font-weight: bold;
+        position: absolute;
+        bottom: 0;
+    }
+    .alert-error > ul li {
+        list-style-type: none;
+        color: red;
+        font-size: 1em;
+    }
+</style>
 
 {% block content %}
 
-    {% crispy form form.helper %}
-
-    <h1 style="margin-left: 1em" id="result"></h1>
+    <div style="height: 19em; position: relative;">
+        {% crispy form form.helper %}
+        <h1 style="margin-left: 1em" id="result"></h1>
+    </div>
 
     <script src="{% static "battles/__javascript__/fight_sim.js" %}"></script>
     <script type="text/javascript">
@@ -28,3 +42,4 @@
     </script>
 
 {% endblock content %}
+

@@ -7,7 +7,7 @@ from django.utils import six
 
 from django_tables2 import Table
 from django_tables2.columns import BooleanColumn
-from django_tables2.utils import AttributeDict
+from django_tables2.utils import AttributeDict, OrderByTuple
 
 from types import MethodType
 
@@ -33,8 +33,11 @@ class UnitTable(Table):
             return mark_safe('<a %s>%s</a>' % (color, text))
 
         for key in self.base_columns.keys():
+            col = self.base_columns[key]
             if key not in ['name', 'id']:
-                col = self.base_columns[key]
                 col.attrs.update(col_style())
                 if type(col) is BooleanColumn:
                     col.render = MethodType(bool_colored_render, col)
+            if key.startswith('b_'):
+                col.order_by = OrderByTuple(('-' + key,))
+
