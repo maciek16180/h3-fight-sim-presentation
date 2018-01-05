@@ -46,6 +46,8 @@ class FightsTable(Table):
         self.base_columns['tot_growth'] = Column(
             attrs=col_style(), verbose_name='Total growth')
 
+        self.base_columns['ai_value'] = Column(
+            attrs=col_style(), order_by='-ai_value', verbose_name='AI Value')
         self.base_columns['value'] = Column(
             attrs=col_style(), order_by='-value', verbose_name='Value')
         self.base_columns['value'].attrs['td'][

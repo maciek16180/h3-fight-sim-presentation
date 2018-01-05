@@ -23,6 +23,7 @@ unit_names = list(Unit.objects.order_by('id').values_list('name', flat=True))
 all_pikeman_fights = [getattr(fights_data.get(pk=1), 'vs' + str(u.pk))
                       for u in Unit.objects.order_by('id')]
 
+ai_values = [x.ai_value for x in Unit.objects.order_by('id')]
 growths = [x.growth + x.horde_growth for x in Unit.objects.order_by('id')]
 costs = [x.gold_cost for x in Unit.objects.order_by('id')]
 
@@ -103,7 +104,14 @@ class IndexView(View):
         for x in fights_data:
             if x.pk in row_units:
                 x_dict = {'id': x.id, 'unit': unit_names[
-                    x.pk-1], 'value': None}
+                    x.pk-1]}
+                x_ai_value = ai_values[x.pk-1]
+                # if request.GET.get('checkbox_growth', None) == 'on':
+                #     x_ai_value = x_ai_value / \
+                #             growths[x.pk-1] * growths[i-1]
+                # if request.GET.get('checkbox_gold_cost', None) == 'on':
+
+
                 for i in range(1, 142):
                     attr_name = 'vs' + str(i)
                     x_dict[attr_name] = getattr(x, attr_name)
@@ -127,6 +135,7 @@ class IndexView(View):
                 else:
                     x_value = 0
                 x_dict['value'] = x_value
+                x_dict['ai_value'] = x_ai_value
                 x_dict['gold_cost'] = costs[x.pk-1]
                 x_dict['tot_growth'] = growths[x.pk-1]
                 table_data.append(x_dict)

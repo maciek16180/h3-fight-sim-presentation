@@ -32,7 +32,7 @@ class FightForm(forms.Form):
 
     helper.layout = Div(
         HTML('<h2>Combat simulator '
-             '[<a href=http://127.0.0.1:8000/docs/#Combat-simulation>docs</a>]'
+             '[<a href=/docs/#Combat-simulation>docs</a>]'
              '</h2>'),
         Div(
             HTML('Choose two stacks and find out which one proves stronger in '
@@ -86,7 +86,7 @@ class BalanceForm(forms.Form):
 
     helper.layout = Div(
         HTML('<h2>Find balance '
-             '[<a href=http://127.0.0.1:8000/docs/#Estimation-method>docs</a>]'
+             '[<a href=/docs/#Estimation-method>docs</a>]'
              '</h2>'),
         Div(
             HTML('Choose two creatures and get the stack sizes for which the '

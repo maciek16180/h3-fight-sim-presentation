@@ -2,3 +2,33 @@
 
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "main/css/base.css" %}{% endblock %}" />
+
+<!-- LATEX -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!--  -->
+
+<style type="text/css">
+    h1 { font-weight: bold; }
+    h1, h2, h3 { color: black; },
+</style>
+
+</br>
+<div style="margin-left: 1em">
+    <h1 id="HoMM-III-moster-duel-simulator">HoMM III moster duel simulator</a></h1><p>This is a tool for measuring combat performance of creatures in HoMM III. The in-game AI Values are a good estimation of the unit's real strength, but they are global, which means there is only a single value to describe the quality of creature $A$ against both creatures $B$ and $C$, which can be vastly different. For example, when a Mighty Gorgon takes on a stack of Pixies, its death stare ability is almost useless, because a Pixie has a very low HP. However, in a fight between Mighty Gorgons and Azure Dragons, the Gorgons' special power is invaluable. This can't be captured by assigning only one fixed number to each monster. Mighty Gorgons vs Azure Dragons is probably the best example, but there are many more like it, albeit less extreme.</p>
+    <p><b>I made a simplified (but equivalent) version of Heroes III combat engine, which allowed me to do fast duel simulations between every single pair of units.</b> That gave me lot of numbers describing how any given unit performs in a direct confrontation against every other unit in HoMM III.</p>
+
+    <p>The Python code is available in a public repository at <a href="https://github.com/maciek16180/h3-fight-sim">https://github.com/maciek16180/h3-fight-sim</a>.</p>
+
+    Check out the rest of the site! If something doesn't work, or you have any suggestions, drop me a line at <span id="contact"></span>.
+</div>
+
+<script type="text/javascript">
+    var username = "pawlikowski.maciek";
+    var hostname = "gmail.com";
+    var linktext = username + "@" + hostname;
+    document.getElementById('contact').innerHTML = "<a href='" + "mail" + "to:" + username + "@" + hostname + "'>" + linktext + "</a>";
+</script>
